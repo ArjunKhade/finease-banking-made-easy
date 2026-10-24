@@ -1,0 +1,275 @@
+<div class="loans-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Loans & Mortgages</h2>
+      <p>Powered by Loans Microservice on port 8090</p>
+    </div>
+    <button mat-flat-button class="fe-btn-primary" (click)="selectedTab.set(1)">
+      <mat-icon>add</mat-icon>
+      <span>Apply New Loan</span>
+    </button>
+  </div>
+
+  <!-- Tabs Navigation (Mockup Screen 5) -->
+  <mat-tab-group [selectedIndex]="selectedTab()" (selectedIndexChange)="selectedTab.set($event)" class="fe-tabs">
+    <mat-tab label="Active Loans"></mat-tab>
+    <mat-tab label="Apply for Loan"></mat-tab>
+    <mat-tab label="EMI Schedule & Calculator"></mat-tab>
+  </mat-tab-group>
+
+  <!-- TAB 1: ACTIVE LOANS LIST -->
+  @if (selectedTab() === 0) {
+    <div class="loans-grid">
+      @for (loan of loans(); track loan.loanNumber) {
+        <div class="fe-card loan-card">
+          <div class="loan-card-header">
+            <div class="loan-icon-wrap">
+              <mat-icon>{{ loan.loanType.includes('Home') ? 'home' : 'person' }}</mat-icon>
+            </div>
+            <div class="loan-titles">
+              <h3>{{ loan.loanType }}</h3>
+              <span class="loan-num">Loan Acc: #{{ loan.loanNumber }}</span>
+            </div>
+            <span class="fe-badge fe-badge-success">Active</span>
+          </div>
+
+          <!-- Amounts Grid -->
+          <div class="loan-stats-grid">
+            <div class="stat-box">
+              <span class="lbl">Loan Amount</span>
+              <span class="val">₹ {{ loan.totalLoan.toLocaleString() }}</span>
+            </div>
+            <div class="stat-box">
+              <span class="lbl">Outstanding Balance</span>
+              <span class="val text-purple">₹ {{ loan.outstandingAmount.toLocaleString() }}</span>
+            </div>
+            <div class="stat-box">
+              <span class="lbl">Monthly EMI</span>
+              <span class="val">₹ {{ (loan.emi || 18750).toLocaleString() }}</span>
+            </div>
+            <div class="stat-box">
+              <span class="lbl">Next Due Date</span>
+              <span class="val text-due">{{ loan.nextDueDate || '25 Nov 2026' }}</span>
+            </div>
+          </div>
+
+          <!-- Repayment Progress -->
+          <div class="repay-progress">
+            <div class="p-labels">
+              <span>Paid: ₹ {{ loan.amountPaid.toLocaleString() }}</span>
+              <span>{{ Math.round((loan.amountPaid / loan.totalLoan) * 100) }}% Completed</span>
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill" [style.width.%]="(loan.amountPaid / loan.totalLoan) * 100"></div>
+            </div>
+          </div>
+
+          <div class="card-footer-action">
+            <button mat-stroked-button color="primary" (click)="selectedTab.set(2)">
+              <mat-icon>calendar_month</mat-icon> View EMI Schedule
+            </button>
+            @if (isManagerOrAdmin()) {
+              <button mat-stroked-button color="accent" class="manager-btn" (click)="sanctionAudit(loan)">
+                <mat-icon>verified</mat-icon> Manager Sanction
+              </button>
+            }
+            <button mat-flat-button class="fe-btn-primary" (click)="payEmi(loan)">
+              Pay EMI
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- TAB 2: APPLY FOR LOAN MULTI-STEP REACTIVE FORM (Mockup Screen 6) -->
+  @if (selectedTab() === 1) {
+    <div class="fe-card apply-loan-container">
+      <div class="form-title-bar">
+        <button mat-icon-button (click)="selectedTab.set(0)">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div>
+          <h3>Apply for a New Loan</h3>
+          <p>Instant approval process with seamless verification</p>
+        </div>
+      </div>
+
+      <form [formGroup]="loanApplyForm" (ngSubmit)="onApplyLoan()" class="apply-form">
+        <!-- Step Indicators -->
+        <div class="steps-nav">
+          <div class="step-pill active">
+            <span class="num">1</span>
+            <span>Personal Details</span>
+          </div>
+          <div class="step-pill active">
+            <span class="num">2</span>
+            <span>Loan Details</span>
+          </div>
+          <div class="step-pill">
+            <span class="num">3</span>
+            <span>Verification</span>
+          </div>
+        </div>
+
+        <!-- Form Content -->
+        <div class="fields-section">
+          <h4 class="section-heading">Personal Details</h4>
+          <div class="fields-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="fullName" placeholder="Arjun Khade" />
+              <mat-icon matPrefix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date of Birth</mat-label>
+              <input matInput formControlName="dob" placeholder="DD-MM-YYYY" />
+              <mat-icon matPrefix>calendar_today</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Mobile Number</mat-label>
+              <input matInput formControlName="mobileNumber" placeholder="8788225355" maxlength="10" />
+              <mat-icon matPrefix>phone</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email Address</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="arjun@gmail.com" />
+              <mat-icon matPrefix>email</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <h4 class="section-heading">Loan Specifications</h4>
+          <div class="fields-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Loan Type</mat-label>
+              <mat-select formControlName="loanType">
+                <mat-option value="Home Loan">Home Loan (8.5% p.a.)</mat-option>
+                <mat-option value="Personal Loan">Personal Loan (11.0% p.a.)</mat-option>
+                <mat-option value="Vehicle Loan">Vehicle Loan (9.2% p.a.)</mat-option>
+                <mat-option value="Education Loan">Education Loan (7.8% p.a.)</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>category</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Requested Loan Amount (₹)</mat-label>
+              <input matInput type="number" formControlName="loanAmount" placeholder="500000" />
+              <span matPrefix>₹&nbsp;</span>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Tenure (Years)</mat-label>
+              <mat-select formControlName="tenure">
+                <mat-option [value]="1">1 Year</mat-option>
+                <mat-option [value]="3">3 Years</mat-option>
+                <mat-option [value]="5">5 Years</mat-option>
+                <mat-option [value]="10">10 Years</mat-option>
+                <mat-option [value]="20">20 Years</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>timelapse</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Monthly Income (₹)</mat-label>
+              <input matInput type="number" formControlName="monthlyIncome" placeholder="75000" />
+              <span matPrefix>₹&nbsp;</span>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Form Action Footer -->
+        <div class="form-footer-buttons">
+          <button type="button" mat-stroked-button class="fe-btn-secondary" (click)="selectedTab.set(0)">Cancel</button>
+          <button
+            type="submit"
+            mat-flat-button
+            class="fe-btn-primary"
+            [disabled]="loanApplyForm.invalid || isSubmitting()"
+          >
+            @if (isSubmitting()) {
+              Submitting Application...
+            } @else {
+              Submit Loan Application
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- TAB 3: LOAN EMI SCHEDULE (Mockup Screen 11) -->
+  @if (selectedTab() === 2) {
+    <div class="fe-card schedule-container">
+      <div class="schedule-header">
+        <div>
+          <h3>Loan EMI Schedule</h3>
+          <p>Home Loan (₹ 25,00,000 | 8.5% | 20 Years)</p>
+        </div>
+        <button mat-stroked-button (click)="downloadEmiTable()">
+          <mat-icon>download</mat-icon> Download Table
+        </button>
+      </div>
+
+      <div class="table-scroll-container">
+        <table class="emi-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Due Date</th>
+            <th>EMI Amount</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Remaining Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>25 Nov 2026</td>
+            <td>₹ 18,750</td>
+            <td>₹ 8,492</td>
+            <td>₹ 10,258</td>
+            <td>₹ 25,00,000</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>25 Dec 2026</td>
+            <td>₹ 18,750</td>
+            <td>₹ 8,617</td>
+            <td>₹ 10,133</td>
+            <td>₹ 24,91,508</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>25 Jan 2027</td>
+            <td>₹ 18,750</td>
+            <td>₹ 8,746</td>
+            <td>₹ 10,004</td>
+            <td>₹ 24,82,891</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>25 Feb 2027</td>
+            <td>₹ 18,750</td>
+            <td>₹ 8,879</td>
+            <td>₹ 9,871</td>
+            <td>₹ 24,74,145</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>25 Mar 2027</td>
+            <td>₹ 18,750</td>
+            <td>₹ 9,015</td>
+            <td>₹ 9,735</td>
+            <td>₹ 24,65,266</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  }
+</div>

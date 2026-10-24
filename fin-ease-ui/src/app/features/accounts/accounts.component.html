@@ -1,0 +1,139 @@
+<div class="accounts-page">
+  <!-- Page Header -->
+  <div class="accounts-header">
+    <div>
+      <h2>Accounts Overview</h2>
+      <p>Manage checking, savings, and term deposits connected to Accounts Microservice</p>
+    </div>
+    <button mat-flat-button class="fe-btn-primary" (click)="openAddAccount()">
+      <mat-icon>add</mat-icon>
+      <span>Add Account</span>
+    </button>
+  </div>
+
+  <!-- Account Tabs (Mockup Screen 3) -->
+  <mat-tab-group (selectedIndexChange)="onTabChange($event)" class="fe-tabs">
+    <mat-tab label="Savings Accounts"></mat-tab>
+    <mat-tab label="Current Accounts"></mat-tab>
+    <mat-tab label="Fixed Deposits"></mat-tab>
+  </mat-tab-group>
+
+  <!-- Accounts Grid & Details View -->
+  <div class="accounts-layout">
+    <!-- Accounts Cards Column -->
+    <div class="accounts-cards-list">
+      @for (acc of filteredAccounts(); track acc.accountNumber) {
+        <div
+          class="fe-card account-card"
+          [class.selected]="selectedAccount()?.accountNumber === acc.accountNumber"
+          (click)="selectedAccount.set(acc)"
+        >
+          <div class="acc-card-main">
+            <div class="acc-icon-box">
+              <mat-icon>account_balance</mat-icon>
+            </div>
+            <div class="acc-info">
+              <span class="acc-type-label">{{ acc.accountType }}</span>
+              <h4 class="acc-num">XXXX {{ acc.accountNumber?.toString()?.slice(-4) }}</h4>
+              <div class="balance-wrap">
+                <span class="bal-label">Available Balance</span>
+                <h3 class="bal-val">₹ {{ (acc.balance || 78420).toLocaleString() }}</h3>
+              </div>
+            </div>
+            <mat-icon class="acc-chevron">chevron_right</mat-icon>
+          </div>
+        </div>
+      } @empty {
+        <div class="fe-card empty-state">
+          <mat-icon>search_off</mat-icon>
+          <p>No accounts found in this category.</p>
+          <button mat-flat-button class="fe-btn-primary" (click)="openAddAccount()">Open First Account</button>
+        </div>
+      }
+    </div>
+
+    <!-- Account Details Panel (Mockup Screen 4) -->
+    @if (selectedAccount(); as acc) {
+      <div class="fe-card account-details-panel">
+        <div class="panel-header">
+          <div class="header-left">
+            <mat-icon class="back-icon" (click)="selectedAccount.set(null)">arrow_back</mat-icon>
+            <div>
+              <h3>Account Details</h3>
+              <span class="header-sub">Status: <strong class="text-success">Active & Verified</strong></span>
+            </div>
+          </div>
+          <button mat-stroked-button (click)="downloadStatement()">
+            <mat-icon>download</mat-icon> Statement
+          </button>
+        </div>
+
+        <!-- Card Banner -->
+        <div class="account-spec-banner">
+          <div class="banner-icon"><mat-icon>account_balance</mat-icon></div>
+          <div class="banner-meta">
+            <h4>{{ acc.accountType }}</h4>
+            <p>XXXX {{ acc.accountNumber?.toString()?.slice(-4) }}</p>
+          </div>
+          <div class="banner-balance">
+            <span>Available Balance</span>
+            <h2>₹ {{ (acc.balance || 78420).toLocaleString() }}</h2>
+          </div>
+        </div>
+
+        <!-- Details Key-Value Grid -->
+        <div class="details-spec-grid">
+          <div class="spec-cell">
+            <span class="spec-label">Account Holder</span>
+            <span class="spec-value">Arjun Khade</span>
+          </div>
+          <div class="spec-cell">
+            <span class="spec-label">IFSC Code</span>
+            <span class="spec-value code-font">SBN0001234</span>
+          </div>
+          <div class="spec-cell">
+            <span class="spec-label">Account Type</span>
+            <span class="spec-value">{{ acc.accountType }}</span>
+          </div>
+          <div class="spec-cell">
+            <span class="spec-label">Branch</span>
+            <span class="spec-value">{{ acc.branchAddress }}</span>
+          </div>
+        </div>
+
+        <!-- Sub Transactions inside Account Details -->
+        <div class="panel-transactions">
+          <div class="p-trans-title">
+            <h4>Recent Account Activity</h4>
+          </div>
+          <div class="p-txn-list">
+            <div class="p-txn-row">
+              <div class="p-icon upi"><mat-icon>send</mat-icon></div>
+              <div class="p-info">
+                <strong>UPI Payment</strong>
+                <span>To Rahul Sharma • Today</span>
+              </div>
+              <span class="p-amt debit">- ₹ 2,000</span>
+            </div>
+            <div class="p-txn-row">
+              <div class="p-icon salary"><mat-icon>work</mat-icon></div>
+              <div class="p-info">
+                <strong>Salary Credit</strong>
+                <span>Acme Corp • 14 Oct 2026</span>
+              </div>
+              <span class="p-amt credit">+ ₹ 45,000</span>
+            </div>
+            <div class="p-txn-row">
+              <div class="p-icon atm"><mat-icon>atm</mat-icon></div>
+              <div class="p-info">
+                <strong>ATM Cash Withdrawal</strong>
+                <span>Pune Main Branch • 12 Oct 2026</span>
+              </div>
+              <span class="p-amt debit">- ₹ 5,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

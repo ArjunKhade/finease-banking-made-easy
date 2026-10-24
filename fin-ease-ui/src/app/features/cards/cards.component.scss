@@ -1,0 +1,313 @@
+.cards-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+  p { font-size: 14px; color: #64748b; }
+}
+
+.cards-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr;
+  gap: 32px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-visual-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Virtual Credit/Debit Card Design (Mockup Screen 7) */
+.virtual-card {
+  position: relative;
+  height: 230px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #0b1528 0%, #1e3a6c 60%, #0052cc 100%);
+  color: white;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 16px 32px rgba(11, 21, 40, 0.35);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &.blocked {
+    filter: grayscale(0.85);
+    opacity: 0.8;
+  }
+
+  .card-glass-layer {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .card-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      .brand-f {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #0066ff, #00d2ff);
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 16px;
+      }
+      span { font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
+    }
+
+    .contactless-icon mat-icon {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 26px;
+    }
+  }
+
+  .chip-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .emv-chip {
+      width: 44px;
+      height: 32px;
+      background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
+      border-radius: 6px;
+      position: relative;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+
+      .chip-lines {
+        position: absolute;
+        top: 25%; left: 0; right: 0; height: 50%;
+        border-top: 1px solid rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .card-category-badge {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .card-number-display {
+    display: flex;
+    gap: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #f8fafc;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 480px) {
+    height: 195px;
+    padding: 16px;
+    border-radius: 16px;
+
+    .card-number {
+      font-size: 16.5px;
+      letter-spacing: 1px;
+    }
+
+    .card-top-row .card-brand span {
+      font-size: 15px;
+    }
+
+    .card-bottom-row .visa-logo {
+      font-size: 18px;
+    }
+  }
+
+  .card-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .caption {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .val {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .visa-logo {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 22px;
+      font-style: italic;
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+  }
+
+  .blocked-watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.card-selector-row {
+  display: flex;
+  gap: 12px;
+
+  .card-thumb {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    transition: all 0.2s ease;
+
+    &:hover { border-color: #0066ff; color: #0066ff; }
+    &.active {
+      background: #eff6ff;
+      border-color: #0066ff;
+      color: #0066ff;
+    }
+  }
+}
+
+.card-info-panel {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 { font-size: 18px; font-weight: 700; color: #0f172a; }
+  }
+
+  .info-rows-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+
+      .row-label { font-size: 13px; color: #64748b; }
+      .row-value { font-size: 14px; font-weight: 600; color: #0f172a; }
+      .code-font { font-family: monospace; font-size: 15px; }
+
+      .num-copy-wrap {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        button { width: 32px; height: 32px; color: #64748b; }
+      }
+    }
+  }
+
+  .limit-gauge-box {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .gauge-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .progress-bar-bg {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #0066ff, #38bdf8);
+        border-radius: 999px;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .gauge-available {
+      font-size: 13px;
+      color: #334155;
+      strong { color: #10b981; }
+    }
+  }
+
+  .card-quick-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    button {
+      flex: 1;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+  }
+}

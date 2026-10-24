@@ -1,0 +1,86 @@
+<div class="controls-dialog">
+  <div class="dialog-header">
+    <div class="header-info">
+      <h2>Manage Card Controls</h2>
+      <p>{{ card.cardType }} ending in •••• {{ card.cardNumber?.slice(-4) }}</p>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="controls-list">
+    <!-- Daily Spending Limit -->
+    <div class="control-item slider-item">
+      <div class="control-text">
+        <div class="icon-wrap"><mat-icon>tune</mat-icon></div>
+        <div class="details">
+          <h4>Daily Spending Limit</h4>
+          <p>Set maximum transaction limit per day</p>
+        </div>
+        <div class="limit-value">₹ {{ spendingLimit.toLocaleString() }}</div>
+      </div>
+      <mat-slider min="5000" max="250000" step="5000" discrete>
+        <input matSliderThumb [(ngModel)]="spendingLimit" />
+      </mat-slider>
+    </div>
+
+    <!-- International Usage -->
+    <div class="control-item">
+      <div class="icon-wrap"><mat-icon>public</mat-icon></div>
+      <div class="details">
+        <h4>International Usage</h4>
+        <p>Enable or disable transactions outside your country</p>
+      </div>
+      <mat-slide-toggle
+        [checked]="card.isInternationalEnabled"
+        (change)="toggleSetting('isInternationalEnabled')"
+        color="primary"
+      ></mat-slide-toggle>
+    </div>
+
+    <!-- Online Transactions -->
+    <div class="control-item">
+      <div class="icon-wrap"><mat-icon>shopping_bag</mat-icon></div>
+      <div class="details">
+        <h4>Online Transactions (E-Commerce)</h4>
+        <p>Allow payment across websites and mobile apps</p>
+      </div>
+      <mat-slide-toggle
+        [checked]="card.isOnlineEnabled"
+        (change)="toggleSetting('isOnlineEnabled')"
+        color="primary"
+      ></mat-slide-toggle>
+    </div>
+
+    <!-- Reset PIN -->
+    <div class="control-item clickable" (click)="resetPin()">
+      <div class="icon-wrap"><mat-icon>pin</mat-icon></div>
+      <div class="details">
+        <h4>Change / Reset ATM PIN</h4>
+        <p>Update 4-digit security PIN via OTP</p>
+      </div>
+      <mat-icon class="arrow">chevron_right</mat-icon>
+    </div>
+
+    <!-- Block / Freeze Card -->
+    <div class="control-item danger-item">
+      <div class="icon-wrap danger-icon"><mat-icon>lock</mat-icon></div>
+      <div class="details">
+        <h4>{{ card.status === 'Active' ? 'Freeze / Block Card' : 'Unfreeze Card' }}</h4>
+        <p>Temporarily disable all ATM, POS, and online transactions</p>
+      </div>
+      <button
+        mat-stroked-button
+        [color]="card.status === 'Active' ? 'warn' : 'primary'"
+        (click)="toggleStatus()"
+      >
+        {{ card.status === 'Active' ? 'Block Card' : 'Unblock' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="dialog-footer">
+    <button mat-flat-button class="fe-btn-primary" (click)="dialogRef.close()">Done</button>
+  </div>
+</div>

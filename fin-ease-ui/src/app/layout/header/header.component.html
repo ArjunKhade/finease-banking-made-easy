@@ -1,0 +1,139 @@
+<header class="top-header">
+  <div class="header-left">
+    <button
+      mat-icon-button
+      class="mobile-toggle-btn"
+      (click)="layoutService.toggleMobileNav()"
+      aria-label="Open navigation menu"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="user-greeting">
+      <h1>Good Morning, {{ userName() }}</h1>
+      <p class="greeting-subtitle">Here's your financial overview & microservices status</p>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <!-- Notification Bell Dropdown (Mockup Screen 13) -->
+    <button
+      mat-icon-button
+      class="action-btn"
+      [matBadge]="unreadCount() > 0 ? unreadCount() : null"
+      matBadgeColor="warn"
+      [matMenuTriggerFor]="notificationsMenu"
+      aria-label="View notifications"
+    >
+      <mat-icon>notifications_none</mat-icon>
+    </button>
+
+    <!-- Help / Info -->
+    <button mat-icon-button class="action-btn" (click)="openHelp()">
+      <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <!-- User Profile Pill -->
+    <div class="user-profile-pill" [matMenuTriggerFor]="profileMenu">
+      <div class="avatar">{{ userInitials() }}</div>
+      <div class="user-meta">
+        <span class="name">{{ userName() }}</span>
+        <span class="role" [class.admin-text]="isAdmin()" [class.manager-text]="isManager()">
+          {{ primaryRole() }}
+        </span>
+      </div>
+      <mat-icon class="arrow-icon">keyboard_arrow_down</mat-icon>
+    </div>
+
+    <!-- Profile Menu (Mockup Screen 10) -->
+    <mat-menu #profileMenu="matMenu" xPosition="before" class="profile-dropdown-menu" panelClass="profile-dropdown-menu">
+      <div class="profile-menu-header" (click)="$event.stopPropagation()">
+        <div class="user-name">{{ userName() }}</div>
+        <div class="user-email">{{ userEmail() }}</div>
+        <span class="user-badge" [class.admin-badge]="isAdmin()" [class.manager-badge]="isManager()">
+          <mat-icon class="badge-icon">verified_user</mat-icon>
+          Role: {{ primaryRole() }}
+        </span>
+      </div>
+      <mat-divider></mat-divider>
+      <a mat-menu-item routerLink="/profile">
+        <mat-icon>person_outline</mat-icon>
+        <span>My Profile</span>
+      </a>
+      @if (isAdmin()) {
+        <a mat-menu-item routerLink="/admin">
+          <mat-icon>shield</mat-icon>
+          <span>IAM Admin Console</span>
+        </a>
+      }
+      <a mat-menu-item routerLink="/profile" [queryParams]="{tab: 'settings'}">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </a>
+      <mat-divider></mat-divider>
+
+      <!-- Quick Persona Switcher for UI Verification -->
+      <div class="persona-switch-section" (click)="$event.stopPropagation()">
+        <div class="persona-title">Switch Persona (Dev Demo):</div>
+        <div class="persona-btns">
+          <button mat-button class="p-btn" [class.active]="isAdmin()" (click)="switchRole('ADMIN')">Admin</button>
+          <button mat-button class="p-btn" [class.active]="isManager()" (click)="switchRole('MANAGER')">Manager</button>
+          <button mat-button class="p-btn" [class.active]="!isAdmin() && !isManager()" (click)="switchRole('USER')">User</button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()" class="logout-item">
+        <mat-icon>logout</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+
+    <!-- Notifications Dropdown Menu (Mockup Screen 13) -->
+    <mat-menu #notificationsMenu="matMenu" xPosition="before" class="notifications-dropdown">
+      <div class="notifications-panel" (click)="$event.stopPropagation()">
+        <div class="notif-header">
+          <div class="title-wrap">
+            <h3>Notifications</h3>
+            @if (unreadCount() > 0) {
+              <span class="unread-pill">{{ unreadCount() }} New</span>
+            }
+          </div>
+          @if (unreadCount() > 0) {
+            <button class="mark-btn" (click)="markAllAsRead()">Mark all as read</button>
+          }
+        </div>
+
+        <div class="notif-list">
+          @for (item of notifications(); track item.id) {
+            <div class="notif-item" [class.unread]="item.unread" (click)="markAsRead(item)">
+              <div class="notif-icon-box" [ngClass]="item.type">
+                <mat-icon>{{ item.icon }}</mat-icon>
+              </div>
+              <div class="notif-text">
+                <div class="notif-row">
+                  <span class="notif-title">{{ item.title }}</span>
+                  <span class="notif-time">{{ item.time }}</span>
+                </div>
+                <p class="notif-desc">{{ item.description }}</p>
+              </div>
+              @if (item.unread) {
+                <div class="dot-unread"></div>
+              }
+            </div>
+          } @empty {
+            <div class="notif-empty">
+              <mat-icon>notifications_off</mat-icon>
+              <p>All caught up! No notifications.</p>
+            </div>
+          }
+        </div>
+
+        <div class="notif-footer">
+          <button mat-button class="clear-all-btn" (click)="clearNotifications()">
+            Clear All Notifications
+          </button>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+</header>

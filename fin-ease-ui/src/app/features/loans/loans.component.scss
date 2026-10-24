@@ -1,0 +1,237 @@
+.loans-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+  p { font-size: 14px; color: #64748b; }
+}
+
+.loans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 20px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+.loan-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .loan-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .loan-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #eef2ff;
+      color: #6366f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loan-titles {
+      flex: 1;
+      h3 { font-size: 17px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+      .loan-num { font-size: 12px; color: #64748b; font-family: monospace; }
+    }
+  }
+
+  .loan-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      .lbl { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 600; }
+      .val { font-size: 16px; font-weight: 700; color: #0f172a; }
+      .text-purple { color: #6366f1; }
+      .text-due { color: #0066ff; }
+    }
+  }
+
+  .repay-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    .p-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .bar-bg {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+      .bar-fill {
+        height: 100%;
+        background: #10b981;
+        border-radius: 99px;
+      }
+    }
+  }
+
+  .card-footer-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+  }
+}
+
+.apply-loan-container {
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+
+  .form-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    h3 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+    p { font-size: 13px; color: #64748b; }
+  }
+
+  .steps-nav {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      padding: 8px 16px;
+      background: #f8fafc;
+      border-radius: 30px;
+
+      .num {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #cbd5e1;
+        color: white;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &.active {
+        color: #0066ff;
+        background: #eff6ff;
+        .num { background: #0066ff; }
+      }
+    }
+  }
+
+  .fields-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .section-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 8px;
+    }
+
+    .fields-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  .form-footer-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 24px;
+  }
+}
+
+.schedule-container {
+  padding: 28px;
+
+  @media (max-width: 640px) {
+    padding: 16px;
+  }
+
+  .schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    h3 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+    p { font-size: 13px; color: #64748b; }
+  }
+
+  .table-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .emi-table {
+    width: 100%;
+    min-width: 580px;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+      white-space: nowrap;
+    }
+  }
+}

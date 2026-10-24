@@ -1,0 +1,84 @@
+<div class="transactions-page">
+  <div class="page-header">
+    <div>
+      <h2>Transactions History</h2>
+      <p>Audited ledger across accounts, credit cards, and loan payments</p>
+    </div>
+    <button mat-stroked-button (click)="exportTransactions()">
+      <mat-icon>download</mat-icon> Export CSV
+    </button>
+  </div>
+
+  <div class="fe-card txns-container">
+    <!-- Controls Bar: Filter Tabs & Search (Mockup Screen 9) -->
+    <div class="table-controls">
+      <div class="filter-pills">
+        <button
+          class="pill"
+          [class.active]="filterType() === 'all'"
+          (click)="filterType.set('all')"
+        >
+          All
+        </button>
+        <button
+          class="pill"
+          [class.active]="filterType() === 'debit'"
+          (click)="filterType.set('debit')"
+        >
+          Debits
+        </button>
+        <button
+          class="pill"
+          [class.active]="filterType() === 'credit'"
+          (click)="filterType.set('credit')"
+        >
+          Credits
+        </button>
+      </div>
+
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Search transactions..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+        />
+      </div>
+    </div>
+
+    <!-- Transactions List -->
+    <div class="txn-rows-wrap">
+      @for (txn of filteredTransactions(); track txn.id) {
+        <div class="txn-row">
+          <div class="txn-icon" [ngClass]="txn.category">
+            @switch (txn.category) {
+              @case ('transfer') { <mat-icon>send</mat-icon> }
+              @case ('salary') { <mat-icon>work</mat-icon> }
+              @case ('shopping') { <mat-icon>shopping_cart</mat-icon> }
+              @default { <mat-icon>atm</mat-icon> }
+            }
+          </div>
+
+          <div class="txn-meta">
+            <h4>{{ txn.title }}</h4>
+            <p>{{ txn.subtitle }} • <span class="date">{{ txn.date }}</span></p>
+          </div>
+
+          <div class="txn-status">
+            <span class="fe-badge fe-badge-success">{{ txn.status }}</span>
+          </div>
+
+          <div class="txn-amount" [ngClass]="txn.type">
+            {{ txn.type === 'credit' ? '+' : '-' }} ₹ {{ txn.amount.toLocaleString() }}
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <mat-icon>receipt_long</mat-icon>
+          <p>No transactions match your search or filter.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

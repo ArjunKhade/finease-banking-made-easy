@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.easybank</groupId>
+    <artifactId>banking-microservices-root</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>banking-microservices-root</name>
+    <description>Root Aggregator POM for EasyBank Microservices</description>
+
+    <modules>
+        <module>configserver</module>
+        <module>eurekaserver</module>
+        <module>accounts</module>
+        <module>cards</module>
+        <module>loans</module>
+        <module>gatewayserver</module>
+        <module>message</module>
+    </modules>
+</project>

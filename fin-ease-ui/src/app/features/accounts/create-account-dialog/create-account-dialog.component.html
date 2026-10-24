@@ -1,0 +1,80 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="title-wrap">
+      <div class="icon-circle">
+        <mat-icon>account_balance</mat-icon>
+      </div>
+      <div>
+        <h2>Open New Account</h2>
+        <p>Enter details to provision account via Accounts Microservice</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="dialog-form">
+    <!-- Name -->
+    <mat-form-field appearance="outline">
+      <mat-label>Customer Full Name</mat-label>
+      <input matInput formControlName="name" placeholder="Arjun Khade" />
+      <mat-icon matPrefix>person</mat-icon>
+      @if (accountForm.get('name')?.hasError('required') && accountForm.get('name')?.touched) {
+        <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Email & Mobile -->
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Email Address</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="arjun@gmail.com" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (accountForm.get('email')?.hasError('required') && accountForm.get('email')?.touched) {
+          <mat-error>Email is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>10-Digit Mobile Number</mat-label>
+        <input matInput formControlName="mobileNumber" placeholder="8788225355" maxlength="10" />
+        <mat-icon matPrefix>smartphone</mat-icon>
+        <mat-hint>Must be a unique 10-digit number</mat-hint>
+        @if (accountForm.get('mobileNumber')?.hasError('pattern') && accountForm.get('mobileNumber')?.touched) {
+          <mat-error>Must be 10 digits</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Account Type & Branch -->
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Account Type</mat-label>
+        <mat-select formControlName="accountType">
+          <mat-option value="Savings Account">Savings Account</mat-option>
+          <mat-option value="Current Account">Current Account</mat-option>
+          <mat-option value="Fixed Deposit">Fixed Deposit</mat-option>
+        </mat-select>
+        <mat-icon matPrefix>account_balance_wallet</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Branch Address</mat-label>
+        <input matInput formControlName="branchAddress" placeholder="Pune Main Branch" />
+        <mat-icon matPrefix>place</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" mat-stroked-button class="fe-btn-secondary" (click)="dialogRef.close()">Cancel</button>
+      <button type="submit" mat-flat-button class="fe-btn-primary" [disabled]="accountForm.invalid || isSubmitting">
+        @if (isSubmitting) {
+          Creating...
+        } @else {
+          Create Account
+        }
+      </button>
+    </div>
+  </form>
+</div>

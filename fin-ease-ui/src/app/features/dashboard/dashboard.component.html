@@ -1,0 +1,176 @@
+<div class="dashboard-page">
+  <!-- Quick Action Buttons Bar -->
+  <div class="page-top-actions">
+    <div class="section-title">
+      <h2>Overview Dashboard</h2>
+      <p>Real-time telemetry and aggregated banking accounts</p>
+    </div>
+    <div class="action-buttons">
+      <button mat-flat-button class="fe-btn-primary" (click)="openAddAccount()">
+        <mat-icon>add</mat-icon>
+        <span>Add Account</span>
+      </button>
+      <button mat-stroked-button class="fe-btn-secondary" (click)="openAddCard()">
+        <mat-icon>credit_card</mat-icon>
+        <span>Add Card</span>
+      </button>
+      <a mat-stroked-button routerLink="/loans" [queryParams]="{apply: true}" class="fe-btn-secondary">
+        <mat-icon>monetization_on</mat-icon>
+        <span>Apply Loan</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Top Summary Metric Cards (Mockup Screen 2) -->
+  <div class="metrics-grid">
+    <!-- Total Balance -->
+    <div class="fe-card metric-card">
+      <div class="metric-top">
+        <div class="metric-info">
+          <span class="label">Total Balance</span>
+          <h3 class="value">₹ {{ totalBalance().toLocaleString() }}</h3>
+          <span class="subtext">Across {{ accounts().length }} active accounts</span>
+        </div>
+        <div class="metric-icon blue-icon">
+          <mat-icon>account_balance_wallet</mat-icon>
+        </div>
+      </div>
+      <div class="metric-footer">
+        <span class="badge-growth"><mat-icon>trending_up</mat-icon> +4.8%</span>
+        <span class="period">vs last month</span>
+      </div>
+    </div>
+
+    <!-- Active Loans -->
+    <div class="fe-card metric-card">
+      <div class="metric-top">
+        <div class="metric-info">
+          <span class="label">Active Loans</span>
+          <h3 class="value purple">₹ {{ totalLoanOutstanding().toLocaleString() }}</h3>
+          <span class="subtext">{{ loans().length }} Active Loans</span>
+        </div>
+        <div class="metric-icon purple-icon">
+          <mat-icon>account_balance</mat-icon>
+        </div>
+      </div>
+      <div class="metric-footer">
+        <span class="next-emi">Next EMI: <strong>25 Nov</strong></span>
+        <a routerLink="/loans" class="card-link">View Details</a>
+      </div>
+    </div>
+
+    <!-- Total Cards -->
+    <div class="fe-card metric-card">
+      <div class="metric-top">
+        <div class="metric-info">
+          <span class="label">Total Cards</span>
+          <h3 class="value green">{{ cards().length }}</h3>
+          <span class="subtext">1 Credit • 1 Debit</span>
+        </div>
+        <div class="metric-icon green-icon">
+          <mat-icon>credit_card</mat-icon>
+        </div>
+      </div>
+      <div class="metric-footer">
+        <span class="status-pill active">● All Active</span>
+        <a routerLink="/cards" class="card-link">Manage Cards</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Dual Column Layout -->
+  <div class="content-dual-grid">
+    <!-- Left: Recent Transactions (Mockup Screen 2) -->
+    <div class="fe-card transactions-card">
+      <div class="card-header">
+        <div class="header-titles">
+          <h3>Recent Transactions</h3>
+          <p>Latest movements across all registered accounts</p>
+        </div>
+        <a routerLink="/transactions" class="view-all-link">View All</a>
+      </div>
+
+      <div class="transactions-list">
+        @for (txn of transactions(); track txn.id) {
+          <div class="txn-item">
+            <div class="txn-icon" [ngClass]="txn.category">
+              @switch (txn.category) {
+                @case ('transfer') { <mat-icon>send</mat-icon> }
+                @case ('salary') { <mat-icon>work</mat-icon> }
+                @case ('shopping') { <mat-icon>shopping_cart</mat-icon> }
+                @default { <mat-icon>atm</mat-icon> }
+              }
+            </div>
+            <div class="txn-details">
+              <h4>{{ txn.title }}</h4>
+              <p>{{ txn.subtitle }} • <span class="time">{{ txn.date }}</span></p>
+            </div>
+            <div class="txn-amount" [ngClass]="txn.type">
+              {{ txn.type === 'credit' ? '+' : '-' }} ₹ {{ txn.amount.toLocaleString() }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Right: Linked Microservices & Fast Access -->
+    <div class="right-column-stack">
+      <!-- Active Account Snapshot -->
+      <div class="fe-card account-preview-card">
+        <div class="card-header">
+          <h3>Primary Account</h3>
+          <span class="fe-badge fe-badge-success">Active</span>
+        </div>
+        @if (accounts().length > 0) {
+          <div class="acc-body">
+            <div class="acc-num-row">
+              <mat-icon>account_balance</mat-icon>
+              <div>
+                <span class="acc-type">{{ accounts()[0].accountType }}</span>
+                <h4 class="acc-num">•••• •••• {{ accounts()[0].accountNumber?.toString()?.slice(-4) }}</h4>
+              </div>
+            </div>
+            <div class="balance-display">
+              <span class="lbl">Available Balance</span>
+              <div class="amt">₹ {{ (accounts()[0].balance || 78420).toLocaleString() }}</div>
+            </div>
+            <div class="branch-tag">
+              <mat-icon>place</mat-icon>
+              <span>{{ accounts()[0].branchAddress }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Microservices Telemetry -->
+      <div class="fe-card microservices-card">
+        <div class="card-header">
+          <h3>Backend Microservices</h3>
+          <span class="pulse-indicator">● Operational</span>
+        </div>
+        <div class="services-status-list">
+          <div class="service-row">
+            <span class="service-name">Accounts Microservice</span>
+            <span class="service-port">Port 8080</span>
+            <span class="status-up">UP</span>
+          </div>
+          <div class="service-row">
+            <span class="service-name">Loans Microservice</span>
+            <span class="service-port">Port 8090</span>
+            <span class="status-up">UP</span>
+          </div>
+          <div class="service-row">
+            <span class="service-name">Cards Microservice</span>
+            <span class="service-port">Port 9000</span>
+            <span class="status-up">UP</span>
+          </div>
+          <div class="service-row">
+            <span class="service-name">Spring Cloud Gateway</span>
+            <span class="service-port">Port 8072</span>
+            <span class="status-up">UP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

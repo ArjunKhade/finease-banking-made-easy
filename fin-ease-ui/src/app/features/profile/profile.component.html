@@ -1,0 +1,95 @@
+<div class="profile-page">
+  <div class="page-header">
+    <h2>My Profile & Security</h2>
+    <p>Manage customer credentials, multi-factor settings, and preferences</p>
+  </div>
+
+  <div class="profile-layout">
+    <!-- Left: Profile Identity Card (Mockup Screen 10) -->
+    <div class="fe-card profile-card">
+      <div class="avatar-large">
+        <span>{{ userInitials() }}</span>
+      </div>
+
+      <div class="user-info-text">
+        <h3>{{ user()?.name || 'Arjun Khade' }}</h3>
+        <p class="email">{{ user()?.email || 'arjun@gmail.com' }}</p>
+        <span class="fe-badge fe-badge-primary">KYC Verified Customer</span>
+      </div>
+
+      <div class="contact-chips">
+        <div class="chip-item">
+          <mat-icon>phone_android</mat-icon>
+          <span>+91 {{ user()?.mobileNumber || '8788225355' }}</span>
+        </div>
+        <div class="chip-item">
+          <mat-icon>location_on</mat-icon>
+          <span>Pune, Maharashtra, India</span>
+        </div>
+      </div>
+
+      <button mat-stroked-button color="warn" class="logout-btn" (click)="onLogout()">
+        <mat-icon>logout</mat-icon> Sign Out
+      </button>
+    </div>
+
+    <!-- Right: Settings Sections (Mockup Screen 10) -->
+    <div class="fe-card settings-menu-card">
+      <div class="section-heading">
+        <h3>Account Settings</h3>
+      </div>
+
+      <div class="settings-items-list">
+        <!-- Personal Info -->
+        <div class="setting-item clickable" (click)="openDetail('Personal Information')">
+          <div class="icon-box"><mat-icon>person_outline</mat-icon></div>
+          <div class="item-text">
+            <h4>Personal Information</h4>
+            <p>Full Name, DOB, Address, PAN & Aadhaar details</p>
+          </div>
+          <mat-icon class="arrow">chevron_right</mat-icon>
+        </div>
+
+        <!-- Change Password -->
+        <div class="setting-item clickable" (click)="openDetail('Change Password')">
+          <div class="icon-box"><mat-icon>lock_outline</mat-icon></div>
+          <div class="item-text">
+            <h4>Change Password & PIN</h4>
+            <p>Update your internet banking password and login credentials</p>
+          </div>
+          <mat-icon class="arrow">chevron_right</mat-icon>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="setting-item">
+          <div class="icon-box"><mat-icon>notifications_none</mat-icon></div>
+          <div class="item-text">
+            <h4>SMS & Email Notifications</h4>
+            <p>Receive transaction alerts via RabbitMQ message consumer</p>
+          </div>
+          <mat-slide-toggle [checked]="true" color="primary" (change)="toggleAlerts()"></mat-slide-toggle>
+        </div>
+
+        <!-- Language -->
+        <div class="setting-item clickable" (click)="openDetail('Language')">
+          <div class="icon-box"><mat-icon>language</mat-icon></div>
+          <div class="item-text">
+            <h4>Language & Localization</h4>
+            <p>English (United States) • ₹ INR</p>
+          </div>
+          <mat-icon class="arrow">chevron_right</mat-icon>
+        </div>
+
+        <!-- Microservices Endpoints -->
+        <div class="setting-item">
+          <div class="icon-box"><mat-icon>dns</mat-icon></div>
+          <div class="item-text">
+            <h4>Microservices API Endpoints</h4>
+            <p>Gateway: 8072 | Accounts: 8080 | Cards: 9000 | Loans: 8090</p>
+          </div>
+          <span class="fe-badge fe-badge-success">Connected</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

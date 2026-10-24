@@ -1,0 +1,103 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="brand-header">
+      <div class="logo-badge">F</div>
+      <h2>Join FinEase</h2>
+      <p>Open your modern digital banking account in minutes</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+      <!-- Full Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="name" placeholder="Arjun Khade" />
+        <mat-icon matPrefix>badge</mat-icon>
+        @if (signupForm.get('name')?.hasError('required') && signupForm.get('name')?.touched) {
+          <mat-error>Full name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline">
+        <mat-label>Email Address</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="arjun@gmail.com" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (signupForm.get('email')?.hasError('required') && signupForm.get('email')?.touched) {
+          <mat-error>Email is required</mat-error>
+        }
+        @if (signupForm.get('email')?.hasError('email') && signupForm.get('email')?.touched) {
+          <mat-error>Please enter a valid email (e.g. user&#64;domain.com)</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Mobile Number -->
+      <mat-form-field appearance="outline">
+        <mat-label>10-Digit Mobile Number</mat-label>
+        <input matInput formControlName="mobileNumber" placeholder="9876543210" maxlength="10" />
+        <mat-icon matPrefix>phone_android</mat-icon>
+        <mat-hint>Must be exactly 10 digits</mat-hint>
+        @if (signupForm.get('mobileNumber')?.hasError('pattern') && signupForm.get('mobileNumber')?.touched) {
+          <mat-error>Must be a 10 digit number</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="form-row">
+        <!-- Account Type -->
+        <mat-form-field appearance="outline">
+          <mat-label>Account Type</mat-label>
+          <mat-select formControlName="accountType">
+            <mat-option value="Savings Account">Savings Account</mat-option>
+            <mat-option value="Current Account">Current Account</mat-option>
+            <mat-option value="Fixed Deposit">Fixed Deposit</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>account_balance_wallet</mat-icon>
+        </mat-form-field>
+
+        <!-- Branch -->
+        <mat-form-field appearance="outline">
+          <mat-label>Preferred Branch</mat-label>
+          <input matInput formControlName="branchAddress" placeholder="Pune Main Branch" />
+          <mat-icon matPrefix>place</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="••••••••"
+        />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword.set(!hidePassword())"
+        >
+          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- Submit -->
+      <button
+        mat-flat-button
+        type="submit"
+        class="submit-btn"
+        [disabled]="signupForm.invalid || isSubmitting()"
+      >
+        @if (isSubmitting()) {
+          <span>Opening Account...</span>
+        } @else {
+          <span>Create My Account</span>
+        }
+      </button>
+
+      <div class="login-footer">
+        Already have an account? <a routerLink="/login">Sign In</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,835 @@
+// FinEase Design System & Global Styles
+@use '@angular/material' as mat;
+
+:root {
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-500: #0066ff;
+  --primary-600: #0052cc;
+  --primary-700: #003d99;
+  
+  --dark-900: #0b1528;
+  --dark-800: #111e38;
+  --dark-700: #1b2c4e;
+  
+  --surface-bg: #f4f6fa;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --danger: #ef4444;
+  --danger-bg: #fef2f2;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--surface-bg);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Material Symbols alignment */
+.material-symbols-outlined, .material-icons {
+  font-family: 'Material Symbols Outlined', 'Material Icons', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  vertical-align: middle;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Common Card & Button Utility Styles */
+.fe-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Primary High-Impact Button (Vibrant Blue Background + Crisp White Text/Icon) */
+.fe-btn-primary,
+button.fe-btn-primary,
+button.mat-mdc-flat-button.fe-btn-primary,
+button.mat-mdc-unelevated-button.fe-btn-primary,
+button.mat-mdc-button-base.fe-btn-primary {
+  background: #0066ff !important;
+  background-color: #0066ff !important;
+  --mdc-filled-button-container-color: #0066ff !important;
+  --mat-filled-button-container-color: #0066ff !important;
+  --mdc-filled-button-label-text-color: #ffffff !important;
+  --mat-filled-button-label-text-color: #ffffff !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  padding: 10px 22px !important;
+  height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.35) !important;
+
+  .mat-icon,
+  mat-icon {
+    color: #ffffff !important;
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  span,
+  .mdc-button__label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+  }
+
+  &:hover:not(:disabled) {
+    background: #0052cc !important;
+    background-color: #0052cc !important;
+    --mdc-filled-button-container-color: #0052cc !important;
+    --mat-filled-button-container-color: #0052cc !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 102, 255, 0.45) !important;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Secondary Outlined Button (Globally styles all outline/stroked buttons) */
+.fe-btn-secondary,
+button.fe-btn-secondary,
+button.mat-mdc-outlined-button,
+a.mat-mdc-outlined-button {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: var(--radius-md) !important;
+  padding: 10px 20px !important;
+  height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s ease !important;
+
+  .mat-icon,
+  mat-icon {
+    color: #334155 !important;
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  span,
+  .mdc-button__label {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+  }
+
+  &:hover {
+    background: #f8fafc !important;
+    border-color: #0066ff !important;
+    color: #0066ff !important;
+    .mat-icon,
+    mat-icon,
+    span,
+    .mdc-button__label {
+      color: #0066ff !important;
+    }
+  }
+}
+
+/* Notification Badge Fix */
+.mat-badge-content {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  width: 18px !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.fe-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+
+  &.fe-badge-success {
+    background: var(--success-bg);
+    color: var(--success);
+  }
+
+  &.fe-badge-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+  }
+
+  &.fe-badge-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+  }
+
+  &.fe-badge-primary {
+    background: var(--primary-50);
+    color: var(--primary-600);
+  }
+}
+
+/* Angular Material Override Tweaks for Modern Crisp Look */
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: var(--radius-xl) !important;
+  padding: 24px !important;
+  background-color: #ffffff !important;
+}
+
+/* ==========================================================================
+   FinEase Enterprise Form Fields System (Angular Material MDC Overrides)
+   Fixes harsh black borders, sharp corners, and misaligned select/inputs
+   ========================================================================== */
+
+.mat-mdc-form-field {
+  width: 100%;
+  
+  /* Material 3 Outlined Form Field Tokens */
+  --mat-form-field-outlined-container-shape: 10px !important;
+  --mat-form-field-outlined-outline-color: #cbd5e1 !important;
+  --mat-form-field-outlined-hover-outline-color: #94a3b8 !important;
+  --mat-form-field-outlined-focus-outline-color: #0066ff !important;
+  --mat-form-field-outlined-focus-outline-width: 1.5px !important;
+  --mat-form-field-outlined-label-text-color: #64748b !important;
+  --mat-form-field-outlined-focus-label-text-color: #0066ff !important;
+  --mat-form-field-outlined-hover-label-text-color: #334155 !important;
+  --mat-form-field-outlined-input-text-color: #0f172a !important;
+  --mat-form-field-outlined-input-text-placeholder-color: #94a3b8 !important;
+  --mat-form-field-outlined-error-outline-color: #ef4444 !important;
+  --mat-form-field-outlined-error-focus-outline-color: #ef4444 !important;
+  --mat-form-field-outlined-error-label-text-color: #ef4444 !important;
+
+  /* Material 3 Select Tokens */
+  --mat-select-enabled-arrow-color: #64748b !important;
+  --mat-select-focused-arrow-color: #0066ff !important;
+  --mat-select-enabled-trigger-text-color: #0f172a !important;
+  --mat-select-panel-background-color: #ffffff !important;
+  --mat-select-placeholder-text-color: #94a3b8 !important;
+
+  /* Form Field Wrapper */
+  .mat-mdc-text-field-wrapper {
+    background-color: #ffffff !important;
+    border-radius: 10px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12) !important;
+  }
+
+  /* Notched Outline Structure (Soft border & rounded corners) */
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading {
+      border-color: #cbd5e1 !important;
+      border-top-left-radius: 10px !important;
+      border-bottom-left-radius: 10px !important;
+      border-width: 1px !important;
+      transition: border-color 0.2s ease, border-width 0.2s ease !important;
+    }
+
+    .mdc-notched-outline__notch {
+      border-color: #cbd5e1 !important;
+      border-width: 1px !important;
+      transition: border-color 0.2s ease, border-width 0.2s ease !important;
+    }
+
+    .mdc-notched-outline__trailing {
+      border-color: #cbd5e1 !important;
+      border-top-right-radius: 10px !important;
+      border-bottom-right-radius: 10px !important;
+      border-width: 1px !important;
+      transition: border-color 0.2s ease, border-width 0.2s ease !important;
+    }
+  }
+
+  &:hover .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #94a3b8 !important;
+    }
+  }
+
+  &.mat-focused .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #0066ff !important;
+      border-width: 1.5px !important;
+    }
+  }
+
+  &.mat-form-field-invalid .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #ef4444 !important;
+    }
+  }
+
+  /* Flex container alignment */
+  .mat-mdc-form-field-flex {
+    align-items: center !important;
+  }
+
+  /* Prefix & Suffix Icons Alignment */
+  .mat-mdc-form-field-icon-prefix {
+    align-self: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 10px !important;
+    color: #64748b !important;
+
+    .mat-icon,
+    mat-icon {
+      font-size: 20px !important;
+      width: 20px !important;
+      height: 20px !important;
+      line-height: 20px !important;
+      color: #64748b !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: color 0.2s ease !important;
+    }
+  }
+
+  .mat-mdc-form-field-icon-suffix {
+    align-self: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+
+    /* Standalone mat-icon in suffix */
+    > .mat-icon,
+    > mat-icon {
+      font-size: 20px !important;
+      width: 20px !important;
+      height: 20px !important;
+      line-height: 20px !important;
+      color: #64748b !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: color 0.2s ease !important;
+    }
+
+    /* Icon button in suffix (e.g. password toggle button) */
+    button.mat-mdc-icon-button,
+    button[matSuffix] {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      min-height: 32px !important;
+      line-height: 1 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      align-self: center !important;
+      color: #64748b !important;
+      border-radius: 50% !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      cursor: pointer !important;
+
+      --mdc-icon-button-state-layer-size: 32px !important;
+
+      .mat-mdc-button-touch-target {
+        width: 32px !important;
+        height: 32px !important;
+      }
+
+      .mat-icon,
+      mat-icon {
+        font-size: 20px !important;
+        width: 20px !important;
+        height: 20px !important;
+        line-height: 20px !important;
+        color: #64748b !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        transition: color 0.15s ease !important;
+      }
+
+      &:hover {
+        color: #0066ff !important;
+        background-color: rgba(0, 102, 255, 0.08) !important;
+
+        .mat-icon,
+        mat-icon {
+          color: #0066ff !important;
+        }
+      }
+    }
+  }
+
+  &.mat-focused {
+    .mat-mdc-form-field-icon-prefix {
+      .mat-icon,
+      mat-icon {
+        color: #0066ff !important;
+      }
+    }
+  }
+
+  /* Prevent docked floating label from overlapping prefix icon if floatLabel='auto' */
+  &:has(.mat-mdc-form-field-icon-prefix) .mdc-notched-outline__notch .mdc-floating-label:not(.mdc-floating-label--float-above),
+  &:has([matPrefix]) .mdc-notched-outline__notch .mdc-floating-label:not(.mdc-floating-label--float-above) {
+    transform: translateY(-50%) translateX(32px) !important;
+  }
+
+  /* Floating Label */
+  .mdc-floating-label,
+  .mat-mdc-floating-label {
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    color: #64748b !important;
+  }
+
+  &.mat-focused .mdc-floating-label,
+  &.mat-focused .mat-mdc-floating-label {
+    color: #0066ff !important;
+    font-weight: 600 !important;
+  }
+
+  /* Input & Select Typography */
+  .mat-mdc-input-element,
+  input.mat-mdc-input-element {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.1px !important;
+
+    &::placeholder {
+      color: #94a3b8 !important;
+      font-weight: 400 !important;
+      opacity: 0.85 !important;
+    }
+  }
+
+  /* Select Trigger and Arrow */
+  .mat-mdc-select-trigger {
+    display: inline-flex !important;
+    align-items: center !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+  }
+
+  .mat-mdc-select-value {
+    color: #0f172a !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+  }
+
+  .mat-mdc-select-arrow svg {
+    fill: #64748b !important;
+    width: 20px !important;
+    height: 20px !important;
+    transition: fill 0.2s ease, transform 0.2s ease !important;
+  }
+
+  &.mat-focused .mat-mdc-select-arrow svg {
+    fill: #0066ff !important;
+  }
+
+  /* Infix alignment & sizing */
+  .mat-mdc-form-field-infix {
+    min-height: 48px !important;
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+  }
+
+  /* Subscript wrapper (errors, hints) */
+  .mat-mdc-form-field-subscript-wrapper {
+    font-size: 11.5px !important;
+    padding: 0 4px !important;
+    margin-top: 4px !important;
+  }
+
+  mat-error,
+  .mat-mdc-form-field-error {
+    color: #ef4444 !important;
+    font-weight: 500 !important;
+  }
+}
+
+/* Material Select Overlay Panel Dropdown */
+.mat-mdc-select-panel {
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+  padding: 6px !important;
+  max-height: 280px !important;
+
+  .mat-mdc-option {
+    border-radius: 8px !important;
+    margin: 2px 0 !important;
+    padding: 0 14px !important;
+    min-height: 40px !important;
+    color: #1e293b !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease !important;
+
+    &:hover:not(.mdc-list-item--disabled) {
+      background-color: #f1f5f9 !important;
+      color: #0066ff !important;
+    }
+
+    &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+      background-color: #eff6ff !important;
+      color: #0066ff !important;
+      font-weight: 600 !important;
+
+      .mdc-list-item__primary-text {
+        color: #0066ff !important;
+      }
+    }
+  }
+}
+
+/* Angular Material Menus Global Styling (Fixes transparent overlay) */
+.mat-mdc-menu-panel {
+  background-color: #ffffff !important;
+  --mat-menu-container-color: #ffffff !important;
+  --mat-sys-surface-container: #ffffff !important;
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.04) !important;
+  min-width: 220px !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+
+  .mat-mdc-menu-content {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+  }
+}
+
+.profile-dropdown-menu {
+  min-width: 260px !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14), 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+
+  .mat-mdc-menu-content {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+  }
+
+  .profile-menu-header {
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 10px;
+    margin-bottom: 6px;
+
+    .user-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .user-email {
+      font-size: 12px;
+      color: #64748b;
+      margin: 2px 0 8px 0;
+      word-break: break-all;
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      border: 1px solid #d1fae5;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      .badge-icon {
+        font-size: 13px !important;
+        width: 13px !important;
+        height: 13px !important;
+        color: #059669 !important;
+        line-height: 13px !important;
+      }
+    }
+  }
+
+  mat-divider,
+  .mat-divider {
+    margin: 6px 0 !important;
+    border-top-color: #f1f5f9 !important;
+  }
+
+  .logout-item {
+    color: #ef4444 !important;
+    font-weight: 600 !important;
+
+    mat-icon,
+    .mat-icon {
+      color: #ef4444 !important;
+    }
+
+    &:hover {
+      background-color: #fef2f2 !important;
+      color: #dc2626 !important;
+
+      mat-icon,
+      .mat-icon {
+        color: #dc2626 !important;
+      }
+    }
+  }
+}
+
+.mat-mdc-menu-item {
+  border-radius: 8px !important;
+  margin: 2px 0 !important;
+  padding: 0 14px !important;
+  min-height: 40px !important;
+  color: #1e293b !important;
+  font-weight: 500 !important;
+  font-size: 13.5px !important;
+  transition: all 0.15s ease !important;
+
+  .mat-icon,
+  mat-icon {
+    margin-right: 10px !important;
+    color: #64748b !important;
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  &:hover {
+    background-color: #f1f5f9 !important;
+    color: #0066ff !important;
+
+    .mat-icon,
+    mat-icon {
+      color: #0066ff !important;
+    }
+  }
+}
+
+/* Notifications Menu Surface Override */
+.mat-mdc-menu-panel.notifications-dropdown {
+  max-width: none !important;
+  border-radius: 16px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+/* FinEase Bottom Toast Notifications */
+.mdc-snackbar__surface {
+  background-color: #0b1528 !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid #1e293b !important;
+}
+
+.fe-snackbar-success .mdc-snackbar__surface {
+  border-left: 4px solid #10b981 !important;
+}
+
+.fe-snackbar-error .mdc-snackbar__surface {
+  border-left: 4px solid #ef4444 !important;
+}
+
+.fe-snackbar-info .mdc-snackbar__surface {
+  border-left: 4px solid #0066ff !important;
+}
+
+.mdc-snackbar__label {
+  color: #f8fafc !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.mat-mdc-snack-bar-action {
+  color: #94a3b8 !important;
+}
+
+/* ==========================================================================
+   FinEase Global Responsiveness & Device Breakpoints (Mobile, Tablet, Desktop)
+   ========================================================================== */
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+img, svg, video {
+  max-width: 100%;
+}
+
+/* Dialogs responsiveness on small screens */
+@media (max-width: 600px) {
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    padding: 16px !important;
+    max-width: 95vw !important;
+    width: 95vw !important;
+    border-radius: 16px !important;
+  }
+
+  .dialog-header {
+    margin-bottom: 16px !important;
+
+    .title-wrap h2 {
+      font-size: 18px !important;
+    }
+
+    .title-wrap p {
+      font-size: 12px !important;
+    }
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse !important;
+    gap: 8px !important;
+
+    button {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+  }
+}
+
+/* Global card padding reduction on mobile */
+@media (max-width: 640px) {
+  .fe-card {
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* Notification panel responsive sizing */
+@media (max-width: 500px) {
+  .mat-mdc-menu-panel.notifications-dropdown {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .notifications-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+

@@ -1,0 +1,66 @@
+<!-- Mobile Backdrop Overlay -->
+@if (layoutService.isMobileNavOpen()) {
+  <div class="sidebar-backdrop" (click)="layoutService.closeMobileNav()"></div>
+}
+
+<aside class="sidebar" [class.open]="layoutService.isMobileNavOpen()">
+  <div class="sidebar-top">
+    <!-- Brand Logo & Mobile Close -->
+    <div class="brand">
+      <div class="brand-left">
+        <div class="logo-box">F</div>
+        <div class="brand-text">
+          <h2>FinEase</h2>
+          <span>Banking Made Easy</span>
+        </div>
+      </div>
+      <button class="close-drawer-btn" (click)="layoutService.closeMobileNav()" aria-label="Close navigation">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()" class="nav-item">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </a>
+      <a routerLink="/accounts" routerLinkActive="active" (click)="onNavClick()" class="nav-item">
+        <mat-icon>account_balance</mat-icon>
+        <span>Accounts</span>
+      </a>
+      <a routerLink="/cards" routerLinkActive="active" (click)="onNavClick()" class="nav-item">
+        <mat-icon>credit_card</mat-icon>
+        <span>Cards</span>
+      </a>
+      <a routerLink="/loans" routerLinkActive="active" (click)="onNavClick()" class="nav-item">
+        <mat-icon>monetization_on</mat-icon>
+        <span>Loans</span>
+      </a>
+      <a routerLink="/transactions" routerLinkActive="active" (click)="onNavClick()" class="nav-item">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Transactions</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="active" (click)="onNavClick()" class="nav-item">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </a>
+
+      @if (isAdmin()) {
+        <a routerLink="/admin" routerLinkActive="active" (click)="onNavClick()" class="nav-item admin-nav-item">
+          <mat-icon>shield</mat-icon>
+          <span>IAM Admin</span>
+          <span class="admin-chip">ADMIN</span>
+        </a>
+      }
+    </nav>
+  </div>
+
+  <!-- Logout Button at bottom -->
+  <div class="sidebar-bottom">
+    <button class="logout-btn" (click)="onLogout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>

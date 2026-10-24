@@ -1,0 +1,159 @@
+<div class="cards-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Card Management</h2>
+      <p>Credit & Debit cards powered by Cards Microservice (Port 9000)</p>
+    </div>
+    <button mat-flat-button class="fe-btn-primary" (click)="openAddCard()">
+      <mat-icon>add</mat-icon>
+      <span>Issue New Card</span>
+    </button>
+  </div>
+
+  <!-- Main Layout: Virtual Card Graphic + Card Details & Controls (Mockup Screen 7 & 8) -->
+  <div class="cards-layout">
+    <!-- Left: Virtual Card Preview -->
+    <div class="card-visual-column">
+      @if (activeCard(); as card) {
+        <!-- Virtual Card Graphic -->
+        <div class="virtual-card" [class.blocked]="card.status === 'Blocked'">
+          <div class="card-glass-layer"></div>
+          
+          <div class="card-top-row">
+            <div class="card-brand">
+              <div class="brand-f">F</div>
+              <span>FinEase</span>
+            </div>
+            <div class="contactless-icon">
+              <mat-icon>contactless</mat-icon>
+            </div>
+          </div>
+
+          <!-- Chip and NFC -->
+          <div class="chip-container">
+            <div class="emv-chip">
+              <div class="chip-lines"></div>
+            </div>
+            <span class="card-category-badge">{{ card.cardType }}</span>
+          </div>
+
+          <!-- Card Number -->
+          <div class="card-number-display">
+            <span>••••</span>
+            <span>••••</span>
+            <span>••••</span>
+            <span>{{ card.cardNumber?.slice(-4) || '5678' }}</span>
+          </div>
+
+          <!-- Card Bottom Info -->
+          <div class="card-bottom-row">
+            <div class="holder-wrap">
+              <span class="caption">Card Holder</span>
+              <span class="val">{{ card.cardHolder || 'Arjun Khade' }}</span>
+            </div>
+
+            <div class="expiry-wrap">
+              <span class="caption">Valid Thru</span>
+              <span class="val">{{ card.expiryDate || '12/28' }}</span>
+            </div>
+
+            <div class="visa-logo">VISA</div>
+          </div>
+
+          @if (card.status === 'Blocked') {
+            <div class="blocked-watermark">
+              <mat-icon>lock</mat-icon> BLOCKED
+            </div>
+          }
+        </div>
+
+        <!-- Card Selector Carousel Thumbnails -->
+        <div class="card-selector-row">
+          @for (c of cards(); track c.cardNumber) {
+            <div
+              class="card-thumb"
+              [class.active]="c.cardNumber === activeCard()?.cardNumber"
+              (click)="activeCard.set(c)"
+            >
+              <mat-icon>credit_card</mat-icon>
+              <span>•••• {{ c.cardNumber?.slice(-4) }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Right: Card Information & Quick Controls (Mockup Screen 7) -->
+    @if (activeCard(); as card) {
+      <div class="fe-card card-info-panel">
+        <div class="panel-header">
+          <h3>Card Information</h3>
+          <button mat-flat-button class="fe-btn-primary" (click)="openCardControls(card)">
+            <mat-icon>tune</mat-icon> Manage Card
+          </button>
+        </div>
+
+        <div class="info-rows-list">
+          <div class="info-row">
+            <span class="row-label">Card Type</span>
+            <span class="row-value">{{ card.cardType }}</span>
+          </div>
+          <div class="info-row">
+            <span class="row-label">Card Number</span>
+            <div class="num-copy-wrap">
+              <span class="row-value code-font">•••• {{ card.cardNumber?.slice(-4) }}</span>
+              <button mat-icon-button (click)="copyCardNumber(card.cardNumber || '')" title="Copy Number">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="row-label">Card Status</span>
+            <span class="fe-badge" [ngClass]="card.status === 'Active' ? 'fe-badge-success' : 'fe-badge-danger'">
+              {{ card.status }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="row-label">Cardholder</span>
+            <span class="row-value">{{ card.cardHolder || 'Arjun Khade' }}</span>
+          </div>
+        </div>
+
+        <!-- Limit Progress Gauge -->
+        <div class="limit-gauge-box">
+          <div class="gauge-labels">
+            <span>Used: ₹ {{ (card.amountUsed || 21580).toLocaleString() }}</span>
+            <span>Limit: ₹ {{ (card.totalLimit || 100000).toLocaleString() }}</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-fill" [style.width.%]="((card.amountUsed || 21580) / (card.totalLimit || 100000)) * 100"></div>
+          </div>
+          <div class="gauge-available">
+            Available to spend: <strong>₹ {{ (card.availableAmount || 78420).toLocaleString() }}</strong>
+          </div>
+        </div>
+
+        <!-- Quick Action Buttons Row -->
+        <div class="card-quick-actions">
+          <button
+            mat-stroked-button
+            [color]="card.status === 'Active' ? 'warn' : 'primary'"
+            (click)="toggleStatus(card)"
+          >
+            <mat-icon>{{ card.status === 'Active' ? 'lock' : 'lock_open' }}</mat-icon>
+            <span>{{ card.status === 'Active' ? 'Freeze Card' : 'Unfreeze Card' }}</span>
+          </button>
+          <button mat-stroked-button (click)="openCardControls(card)">
+            <mat-icon>tune</mat-icon>
+            <span>Set Limits</span>
+          </button>
+          <button mat-stroked-button (click)="viewTransactions()">
+            <mat-icon>receipt</mat-icon>
+            <span>Transactions</span>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

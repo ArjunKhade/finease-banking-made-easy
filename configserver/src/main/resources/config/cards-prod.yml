@@ -1,0 +1,12 @@
+
+build:
+  version: "1.0.0"
+
+cards:
+  message: "Welcome to EazyBank cards related local Production APIs "
+  contactDetails:
+    name: "Roy Doe - Developer"
+    email: "roydoe@eazybank.com"
+  onCallSupport:
+    - (555) 555-1234
+    - (555) 523-1345

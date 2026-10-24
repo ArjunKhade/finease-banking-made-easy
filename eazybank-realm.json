@@ -1,0 +1,198 @@
+{
+  "id": "eazybank",
+  "realm": "eazybank",
+  "displayName": "EasyBank Microservices IAM",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMIN",
+        "description": "Full Administrative Control and Role Management"
+      },
+      {
+        "name": "MANAGER",
+        "description": "Branch Management and Loan Sanctions"
+      },
+      {
+        "name": "USER",
+        "description": "Standard Retail Banking Customer"
+      },
+      {
+        "name": "ACCOUNTS",
+        "description": "Access to Accounts Microservice"
+      },
+      {
+        "name": "CARDS",
+        "description": "Access to Cards Microservice"
+      },
+      {
+        "name": "LOANS",
+        "description": "Access to Loans Microservice"
+      }
+    ]
+  },
+  "defaultRoles": [
+    "USER"
+  ],
+  "clients": [
+    {
+      "clientId": "finease-ui",
+      "name": "FinEase Angular Frontend",
+      "description": "Public OIDC PKCE Client for Angular Single Page Application",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "rootUrl": "http://localhost:4200",
+      "baseUrl": "http://localhost:4200",
+      "redirectUris": [
+        "http://localhost:4200/*",
+        "http://localhost:4200"
+      ],
+      "webOrigins": [
+        "http://localhost:4200",
+        "+"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:4200/login##http://localhost:4200/*"
+      },
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ]
+    },
+    {
+      "clientId": "backend-admin-client",
+      "name": "Spring Boot Backend Admin Client",
+      "description": "Confidential client for microservices service-account integration",
+      "enabled": true,
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "backend-admin-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "username": "arjun@gmail.com",
+      "email": "arjun@gmail.com",
+      "firstName": "Arjun",
+      "lastName": "Khade",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ADMIN",
+        "USER",
+        "ACCOUNTS",
+        "CARDS",
+        "LOANS"
+      ],
+      "attributes": {
+        "mobileNumber": [
+          "8788225355"
+        ]
+      }
+    },
+    {
+      "username": "admin@eazybank.com",
+      "email": "admin@eazybank.com",
+      "firstName": "Arjun",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ADMIN",
+        "USER",
+        "ACCOUNTS",
+        "CARDS",
+        "LOANS"
+      ],
+      "attributes": {
+        "mobileNumber": [
+          "8788225355"
+        ]
+      }
+    },
+    {
+      "username": "manager@eazybank.com",
+      "email": "manager@eazybank.com",
+      "firstName": "Priya",
+      "lastName": "Sharma",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Manager@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "MANAGER",
+        "USER",
+        "LOANS",
+        "CARDS"
+      ],
+      "attributes": {
+        "mobileNumber": [
+          "9822012345"
+        ]
+      }
+    },
+    {
+      "username": "user@eazybank.com",
+      "email": "user@eazybank.com",
+      "firstName": "Rahul",
+      "lastName": "Deshmukh",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "User@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "USER",
+        "ACCOUNTS",
+        "CARDS",
+        "LOANS"
+      ],
+      "attributes": {
+        "mobileNumber": [
+          "9765432100"
+        ]
+      }
+    }
+  ]
+}

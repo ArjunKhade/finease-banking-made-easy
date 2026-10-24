@@ -1,0 +1,243 @@
+.admin-page {
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+  }
+  p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+  }
+}
+
+.role-pill.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #7c3aed15;
+  color: #7c3aed;
+  border: 1px solid #7c3aed40;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.iam-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+
+  .icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    &.realm-icon {
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+    &.client-icon {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+    &.gw-icon {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+    &.active-icon {
+      background: #faf5ff;
+      color: #9333ea;
+    }
+  }
+
+  .metric-info {
+    display: flex;
+    flex-direction: column;
+    .metric-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .metric-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .sub-label {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  }
+}
+
+.table-section {
+  padding: 24px;
+  .section-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      color: #0f172a;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+      margin: 0;
+    }
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  background: transparent;
+
+  th {
+    font-weight: 600;
+    color: #475569;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  td {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .avatar-sm {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .user-cell-meta {
+    display: flex;
+    flex-direction: column;
+    .name {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .email {
+      font-size: 12px;
+      color: #64748b;
+    }
+  }
+}
+
+.role-tag {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.admin {
+    background: #faf5ff;
+    color: #7c3aed;
+    border: 1px solid #e9d5ff;
+  }
+  &.manager {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+  }
+  &.user {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  &.active {
+    color: #16a34a;
+    .dot { background: #16a34a; }
+  }
+  &.locked {
+    color: #dc2626;
+    .dot { background: #dc2626; }
+  }
+}
+
+.actions-row {
+  display: flex;
+  gap: 8px;
+  button {
+    font-size: 12px;
+    padding: 0 10px;
+    height: 32px;
+  }
+}

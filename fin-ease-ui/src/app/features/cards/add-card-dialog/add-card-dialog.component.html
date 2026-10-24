@@ -1,0 +1,50 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="title-wrap">
+      <div class="icon-circle">
+        <mat-icon>credit_card</mat-icon>
+      </div>
+      <div>
+        <h2>Issue New Card</h2>
+        <p>Connects to Cards Microservice on port 9000</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="cardForm" (ngSubmit)="onSubmit()" class="dialog-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Customer Mobile Number</mat-label>
+      <input matInput formControlName="mobileNumber" placeholder="8788225355" maxlength="10" />
+      <mat-icon matPrefix>phone</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Card Category</mat-label>
+      <mat-select formControlName="cardType">
+        <mat-option value="Credit Card">FinEase Platinum Credit Card</mat-option>
+        <mat-option value="Debit Card">FinEase Visa Debit Card</mat-option>
+      </mat-select>
+      <mat-icon matPrefix>credit_card</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cardholder Name</mat-label>
+      <input matInput formControlName="cardHolder" placeholder="Arjun Khade" />
+      <mat-icon matPrefix>badge</mat-icon>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+      <button type="button" mat-stroked-button class="fe-btn-secondary" (click)="dialogRef.close()">Cancel</button>
+      <button type="submit" mat-flat-button class="fe-btn-primary" [disabled]="cardForm.invalid || isSubmitting">
+        @if (isSubmitting) {
+          Issuing Card...
+        } @else {
+          Issue Card
+        }
+      </button>
+    </div>
+  </form>
+</div>

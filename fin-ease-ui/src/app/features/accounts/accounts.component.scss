@@ -1,0 +1,237 @@
+.accounts-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.accounts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+  p { font-size: 14px; color: #64748b; }
+}
+
+.accounts-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.accounts-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account-card {
+  padding: 20px 24px;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #0066ff;
+    transform: translateY(-2px);
+  }
+
+  &.selected {
+    border-color: #0066ff;
+    background: #f8fbff;
+    box-shadow: 0 4px 16px rgba(0, 102, 255, 0.12);
+  }
+
+  .acc-card-main {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .acc-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #0066ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .acc-info {
+      flex: 1;
+      .acc-type-label { font-size: 13px; color: #64748b; font-weight: 500; }
+      .acc-num { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+
+      .balance-wrap {
+        .bal-label { font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 600; }
+        .bal-val { font-size: 20px; font-weight: 800; color: #0f172a; }
+      }
+    }
+
+    .acc-chevron {
+      color: #94a3b8;
+    }
+  }
+}
+
+.account-details-panel {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      .back-icon {
+        cursor: pointer;
+        color: #64748b;
+        &:hover { color: #0066ff; }
+      }
+      h3 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+      .header-sub { font-size: 12px; color: #64748b; }
+      .text-success { color: #10b981; }
+    }
+  }
+
+  .account-spec-banner {
+    background: linear-gradient(135deg, #0b1528, #182a4d);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .banner-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+    }
+
+    .banner-meta {
+      flex: 1;
+      h4 { font-size: 16px; font-weight: 700; }
+      p { font-size: 13px; color: #94a3b8; }
+    }
+
+    .banner-balance {
+      text-align: right;
+      span { font-size: 11px; color: #94a3b8; text-transform: uppercase; }
+      h2 { font-size: 24px; font-weight: 800; color: #38bdf8; }
+    }
+
+    @media (max-width: 540px) {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px;
+      gap: 12px;
+
+      .banner-balance {
+        text-align: left;
+      }
+    }
+  }
+
+  .details-spec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 20px;
+
+    @media (max-width: 500px) {
+      grid-template-columns: 1fr;
+      padding: 14px;
+      gap: 12px;
+    }
+
+    .spec-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      .spec-label { font-size: 12px; color: #64748b; }
+      .spec-value { font-size: 14px; font-weight: 600; color: #0f172a; }
+      .code-font { font-family: monospace; }
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 16px;
+  }
+
+  .panel-transactions {
+    h4 { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+    .p-txn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .p-txn-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: #f8fafc;
+
+        .p-icon {
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &.upi { background: #fef2f2; color: #ef4444; }
+          &.salary { background: #ecfdf5; color: #10b981; }
+          &.atm { background: #f1f5f9; color: #64748b; }
+          mat-icon { font-size: 18px; width: 18px; height: 18px; }
+        }
+
+        .p-info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          strong { font-size: 13px; color: #0f172a; }
+          span { font-size: 11px; color: #64748b; }
+        }
+
+        .p-amt {
+          font-size: 14px;
+          font-weight: 700;
+          &.credit { color: #10b981; }
+          &.debit { color: #ef4444; }
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  mat-icon { font-size: 48px; width: 48px; height: 48px; color: #94a3b8; }
+  p { color: #64748b; font-size: 14px; }
+}
