@@ -1,4 +1,4 @@
-# EasyBank / FinEase: Spring Boot Microservices Banking Platform
+# FinEase: Angular Java Spring Boot Microservices Banking Platform
 
 A production-grade, event-driven digital banking microservices platform built with **Spring Boot 3**, **Spring Cloud**, **RabbitMQ**, **Redis**, **Keycloak IAM**, and an **Angular 22** frontend (`fin-ease-ui`).
 
