@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BankingApiService } from '../../core/services/banking-api.service';
+import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
@@ -24,13 +25,21 @@ import { NotificationService } from '../../core/services/notification.service';
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'
 })
-export class TransactionsComponent {
+export class TransactionsComponent implements OnInit {
   private api = inject(BankingApiService);
+  private auth = inject(AuthService);
   private notification = inject(NotificationService);
 
   transactions = this.api.transactionsList;
   filterType = signal<'all' | 'debit' | 'credit'>('all');
   searchQuery = signal('');
+
+  ngOnInit(): void {
+    const user = this.auth.currentUser();
+    if (user?.mobileNumber && this.transactions().length === 0) {
+      this.api.loadUserBankingData(user.mobileNumber, user).subscribe();
+    }
+  }
 
   filteredTransactions = computed(() => {
     const type = this.filterType();

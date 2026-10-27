@@ -18,7 +18,7 @@
     <!-- Name -->
     <mat-form-field appearance="outline">
       <mat-label>Customer Full Name</mat-label>
-      <input matInput formControlName="name" placeholder="Arjun Khade" />
+      <input matInput formControlName="name" placeholder="e.g. Jane Smith" />
       <mat-icon matPrefix>person</mat-icon>
       @if (accountForm.get('name')?.hasError('required') && accountForm.get('name')?.touched) {
         <mat-error>Name is required</mat-error>
@@ -29,7 +29,7 @@
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Email Address</mat-label>
-        <input matInput formControlName="email" type="email" placeholder="arjun@gmail.com" />
+        <input matInput formControlName="email" type="email" placeholder="e.g. jane.smith@example.com" />
         <mat-icon matPrefix>email</mat-icon>
         @if (accountForm.get('email')?.hasError('required') && accountForm.get('email')?.touched) {
           <mat-error>Email is required</mat-error>
@@ -38,7 +38,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>10-Digit Mobile Number</mat-label>
-        <input matInput formControlName="mobileNumber" placeholder="8788225355" maxlength="10" />
+        <input matInput formControlName="mobileNumber" placeholder="e.g. 9876543210" maxlength="10" />
         <mat-icon matPrefix>smartphone</mat-icon>
         <mat-hint>Must be a unique 10-digit number</mat-hint>
         @if (accountForm.get('mobileNumber')?.hasError('pattern') && accountForm.get('mobileNumber')?.touched) {
@@ -65,6 +65,29 @@
         <mat-icon matPrefix>place</mat-icon>
       </mat-form-field>
     </div>
+
+    <!-- Initial Deposit Amount -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Initial Deposit Amount (₹)</mat-label>
+      <input matInput type="number" formControlName="depositAmount" placeholder="e.g. 5000" min="0" />
+      <mat-icon matPrefix>payments</mat-icon>
+      <span matSuffix style="margin-right: 8px; font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">INR</span>
+      <mat-hint>Amount will be saved and credited as initial balance</mat-hint>
+      @if (accountForm.get('depositAmount')?.hasError('required') && accountForm.get('depositAmount')?.touched) {
+        <mat-error>Initial deposit amount is required</mat-error>
+      }
+      @if (accountForm.get('depositAmount')?.hasError('min') && accountForm.get('depositAmount')?.touched) {
+        <mat-error>Deposit amount cannot be negative</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Login Password for Keycloak IAM -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Login Password for Keycloak SSO</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="Default: Customer@123" />
+      <mat-icon matPrefix>lock</mat-icon>
+      <mat-hint>Used for Keycloak SSO login (Default: Customer&#64;123)</mat-hint>
+    </mat-form-field>
 
     <div class="dialog-actions">
       <button type="button" mat-stroked-button class="fe-btn-secondary" (click)="dialogRef.close()">Cancel</button>

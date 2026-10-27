@@ -12,15 +12,15 @@
       </div>
 
       <div class="user-info-text">
-        <h3>{{ user()?.name || 'Arjun Khade' }}</h3>
-        <p class="email">{{ user()?.email || 'arjun@gmail.com' }}</p>
+        <h3>{{ user()?.name || 'Valued Customer' }}</h3>
+        <p class="email">{{ user()?.email || 'No email registered' }}</p>
         <span class="fe-badge fe-badge-primary">KYC Verified Customer</span>
       </div>
 
       <div class="contact-chips">
         <div class="chip-item">
           <mat-icon>phone_android</mat-icon>
-          <span>+91 {{ user()?.mobileNumber || '8788225355' }}</span>
+          <span>+91 {{ user()?.mobileNumber || 'Not available' }}</span>
         </div>
         <div class="chip-item">
           <mat-icon>location_on</mat-icon>

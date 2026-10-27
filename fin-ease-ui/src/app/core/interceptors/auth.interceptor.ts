@@ -25,19 +25,24 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Read access token directly from storage to eliminate any DI circular dependencies
   let token: string | null = null;
+  let isMock = false;
   try {
     const saved =
       sessionStorage.getItem('finease_auth_tokens') ||
       localStorage.getItem('finease_auth_tokens');
     if (saved) {
       token = JSON.parse(saved)?.access_token || null;
+      if (token && (token.includes('mock-signature') || token.startsWith('mock-'))) {
+        isMock = true;
+      }
     }
   } catch {
     token = null;
   }
 
   let authReq = req;
-  if (token) {
+  // Only inject real Bearer tokens. Mock tokens fail cryptographic validation at the API Gateway.
+  if (token && !isMock) {
     authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -47,10 +52,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
+      // In local dev/mock sessions, do not force-logout when an unauthenticated endpoint responds with 401
+      if (isMock) {
+        return throwError(() => error);
+      }
+
       if (error.status === 401 && !isPublicUrl) {
         // Lazily retrieve AuthService only if token refresh is needed
         const authService = injector.get(AuthService);
-        if (token && authService.refreshTokenValue()) {
+        const refreshVal = authService.refreshTokenValue();
+        if (token && refreshVal && !refreshVal.startsWith('mock-')) {
           return authService.refreshToken().pipe(
             switchMap(newTokens => {
               const retryReq = req.clone({

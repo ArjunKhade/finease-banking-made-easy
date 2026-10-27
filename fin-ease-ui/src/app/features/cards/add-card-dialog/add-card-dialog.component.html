@@ -17,7 +17,7 @@
   <form [formGroup]="cardForm" (ngSubmit)="onSubmit()" class="dialog-form">
     <mat-form-field appearance="outline">
       <mat-label>Customer Mobile Number</mat-label>
-      <input matInput formControlName="mobileNumber" placeholder="8788225355" maxlength="10" />
+      <input matInput formControlName="mobileNumber" placeholder="e.g. 9876543210" maxlength="10" />
       <mat-icon matPrefix>phone</mat-icon>
     </mat-form-field>
 
@@ -32,7 +32,7 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Cardholder Name</mat-label>
-      <input matInput formControlName="cardHolder" placeholder="Arjun Khade" />
+      <input matInput formControlName="cardHolder" placeholder="e.g. Jane Smith" />
       <mat-icon matPrefix>badge</mat-icon>
     </mat-form-field>
 

@@ -45,8 +45,9 @@ export class SignupComponent {
       email: ['', [Validators.required, Validators.email]],
       mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       accountType: ['Savings Account', Validators.required],
-      branchAddress: ['123 Main Street, Pune', Validators.required],
-      password: ['Password123!', [Validators.required, Validators.minLength(6)]]
+      branchAddress: ['Pune Main Branch', Validators.required],
+      depositAmount: [5000, [Validators.required, Validators.min(0)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -62,22 +63,37 @@ export class SignupComponent {
       mobileNumber: formVal.mobileNumber,
       accountsDto: {
         accountType: formVal.accountType,
-        branchAddress: formVal.branchAddress
+        branchAddress: formVal.branchAddress,
+        balance: Number(formVal.depositAmount) || 0
       }
     };
 
+    this.api.clearData();
     this.api.createAccount(customerDto).subscribe({
-      next: (res) => {
+      next: async (res) => {
+        // Sync user with Keycloak IAM
+        await this.auth.syncKeycloakUser(formVal.name, formVal.email, formVal.mobileNumber, formVal.password);
         this.auth.register(formVal.name, formVal.email, formVal.mobileNumber);
+        localStorage.setItem('finease_current_mobile', formVal.mobileNumber);
+
         this.isSubmitting.set(false);
-        this.notification.success('Account created successfully! Welcome to FinEase.');
+        this.notification.success('Account created and synced with Keycloak IAM successfully! Welcome to FinEase.');
         this.router.navigate(['/dashboard']);
       },
-      error: () => {
-        this.auth.register(formVal.name, formVal.email, formVal.mobileNumber);
+      error: async (err) => {
         this.isSubmitting.set(false);
-        this.notification.info('Created in local demo session.');
-        this.router.navigate(['/dashboard']);
+        const serverMsg = err?.error?.errorMessage || err?.error?.message ||
+          (typeof err?.error === 'object' && err?.error ? Object.values(err.error)[0] : null);
+        if (serverMsg) {
+          this.notification.error(String(serverMsg));
+        } else {
+          // If completely offline (status 0), fallback to local demo registration & sync
+          await this.auth.syncKeycloakUser(formVal.name, formVal.email, formVal.mobileNumber, formVal.password);
+          this.auth.register(formVal.name, formVal.email, formVal.mobileNumber);
+          localStorage.setItem('finease_current_mobile', formVal.mobileNumber);
+          this.notification.info('Created in local demo session.');
+          this.router.navigate(['/dashboard']);
+        }
       }
     });
   }

@@ -38,24 +38,29 @@ export class LoginComponent {
     private notification: NotificationService
   ) {
     this.loginForm = this.fb.group({
-      identifier: ['arjun@gmail.com', [Validators.required]],
-      password: ['Password123!', [Validators.required, Validators.minLength(6)]],
+      identifier: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       rememberMe: [true]
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.loginForm.invalid) return;
 
     this.isLoading.set(true);
-    const { identifier, rememberMe } = this.loginForm.value;
+    const { identifier, password } = this.loginForm.value;
 
-    setTimeout(() => {
-      this.authService.login(identifier, rememberMe);
+    try {
+      const success = await this.authService.loginWithCredentials(identifier, password);
+      if (success) {
+        this.notification.success('Welcome back to FinEase!');
+        this.router.navigate(['/dashboard']);
+      }
+    } catch (err: any) {
+      this.notification.error(err?.message || 'Invalid email or password. Please try again.');
+    } finally {
       this.isLoading.set(false);
-      this.notification.success('Welcome back to FinEase!');
-      this.router.navigate(['/dashboard']);
-    }, 400);
+    }
   }
 
   async loginWithKeycloak(): Promise<void> {
@@ -64,14 +69,16 @@ export class LoginComponent {
       await this.authService.loginWithKeycloakSso('/dashboard');
     } catch {
       this.notification.warn('Could not connect to Keycloak. Switching to local session.');
-      this.authService.setMockSession('USER');
+      this.authService.setMockSession('CUSTOMER');
       this.router.navigate(['/dashboard']);
     }
   }
 
-  quickLoginAs(role: 'ADMIN' | 'MANAGER' | 'USER', email: string): void {
-    const name = role === 'ADMIN' ? 'Arjun Khade (Admin)' : role === 'MANAGER' ? 'Priya Sharma (Manager)' : 'Arjun Khade';
-    this.authService.setMockSession(role, name, email);
+  quickLoginAs(role: 'ADMIN' | 'MANAGER' | 'CUSTOMER', email: string): void {
+    const user = this.authService.getRegisteredUsers().find(u => u.email === email);
+    const name = user ? user.name : (role === 'ADMIN' ? 'System Administrator' : role === 'MANAGER' ? 'Priya Sharma' : 'Rahul Deshmukh');
+    const mobile = user ? (user.mobileNumber || '') : (role === 'ADMIN' ? '9876543210' : role === 'MANAGER' ? '9822012345' : '9765432100');
+    this.authService.setMockSession(role, name, email, mobile);
     this.notification.success(`Logged in as ${role}: ${name}`);
     this.router.navigate(['/dashboard']);
   }

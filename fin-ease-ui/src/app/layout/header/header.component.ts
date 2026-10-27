@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { LayoutService } from '../../core/services/layout.service';
+import { BankingApiService } from '../../core/services/banking-api.service';
 
 interface NotificationItem {
   id: string;
@@ -38,6 +39,7 @@ interface NotificationItem {
 export class HeaderComponent {
   private auth = inject(AuthService);
   private notification = inject(NotificationService);
+  private bankingApi = inject(BankingApiService);
   protected layoutService = inject(LayoutService);
 
   notifications = signal<NotificationItem[]>([
@@ -82,11 +84,11 @@ export class HeaderComponent {
   unreadCount = signal(3);
 
   userName(): string {
-    return this.auth.currentUser()?.name || 'Arjun';
+    return this.auth.currentUser()?.name || 'Customer';
   }
 
   userEmail(): string {
-    return this.auth.currentUser()?.email || 'arjun@gmail.com';
+    return this.auth.currentUser()?.email || '';
   }
 
   userInitials(): string {
@@ -125,12 +127,39 @@ export class HeaderComponent {
 
   isAdmin = this.auth.isAdmin;
   isManager = this.auth.isManager;
-  primaryRole = computed(() => this.auth.userRoles()[0] || 'USER');
+  isCustomer = this.auth.isCustomer;
+  primaryRole = computed(() => this.auth.userRoles()[0] || 'CUSTOMER');
 
-  switchRole(role: 'ADMIN' | 'MANAGER' | 'USER'): void {
-    const user = this.auth.currentUser();
-    this.auth.setMockSession(role, user?.name, user?.email, user?.mobileNumber);
-    this.notification.success(`Switched active persona to ${role}`);
+  switchRole(role: 'ADMIN' | 'MANAGER' | 'CUSTOMER'): void {
+    const allUsers = this.auth.getRegisteredUsers();
+    let targetUser: any;
+
+    if (role === 'ADMIN') {
+      targetUser = allUsers.find(u => u.roles.includes('ADMIN')) || {
+        name: 'System Administrator',
+        email: 'admin@eazybank.com',
+        mobileNumber: '9876543210'
+      };
+    } else if (role === 'MANAGER') {
+      targetUser = allUsers.find(u => u.roles.includes('MANAGER')) || {
+        name: 'Priya Sharma',
+        email: 'manager@eazybank.com',
+        mobileNumber: '9822012345'
+      };
+    } else {
+      targetUser = allUsers.find(u => u.roles.includes('CUSTOMER')) || {
+        name: 'Rahul Deshmukh',
+        email: 'user@eazybank.com',
+        mobileNumber: '9765432100'
+      };
+    }
+
+    this.auth.setMockSession(role, targetUser.name, targetUser.email, targetUser.mobileNumber);
+    if (targetUser.mobileNumber) {
+      localStorage.setItem('finease_current_mobile', targetUser.mobileNumber);
+      this.bankingApi.loadUserBankingData(targetUser.mobileNumber, targetUser).subscribe();
+    }
+    this.notification.success(`Switched active persona to ${role} (${targetUser.name})`);
   }
 
   logout(): void {

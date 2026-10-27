@@ -10,7 +10,7 @@
       <!-- Full Name -->
       <mat-form-field appearance="outline">
         <mat-label>Full Name</mat-label>
-        <input matInput formControlName="name" placeholder="Arjun Khade" />
+        <input matInput formControlName="name" placeholder="e.g. Jane Smith" />
         <mat-icon matPrefix>badge</mat-icon>
         @if (signupForm.get('name')?.hasError('required') && signupForm.get('name')?.touched) {
           <mat-error>Full name is required</mat-error>
@@ -20,7 +20,7 @@
       <!-- Email -->
       <mat-form-field appearance="outline">
         <mat-label>Email Address</mat-label>
-        <input matInput formControlName="email" type="email" placeholder="arjun@gmail.com" />
+        <input matInput formControlName="email" type="email" placeholder="e.g. jane.smith@example.com" />
         <mat-icon matPrefix>email</mat-icon>
         @if (signupForm.get('email')?.hasError('required') && signupForm.get('email')?.touched) {
           <mat-error>Email is required</mat-error>
@@ -60,6 +60,21 @@
           <mat-icon matPrefix>place</mat-icon>
         </mat-form-field>
       </div>
+
+      <!-- Initial Deposit Amount -->
+      <mat-form-field appearance="outline">
+        <mat-label>Initial Deposit Amount (₹)</mat-label>
+        <input matInput type="number" formControlName="depositAmount" placeholder="e.g. 5000" min="0" />
+        <mat-icon matPrefix>payments</mat-icon>
+        <span matSuffix style="margin-right: 8px; font-weight: 500; font-size: 0.85rem; color: var(--text-secondary);">INR</span>
+        <mat-hint>Amount credited upon account opening</mat-hint>
+        @if (signupForm.get('depositAmount')?.hasError('required') && signupForm.get('depositAmount')?.touched) {
+          <mat-error>Initial deposit is required</mat-error>
+        }
+        @if (signupForm.get('depositAmount')?.hasError('min') && signupForm.get('depositAmount')?.touched) {
+          <mat-error>Deposit amount cannot be negative</mat-error>
+        }
+      </mat-form-field>
 
       <!-- Password -->
       <mat-form-field appearance="outline">

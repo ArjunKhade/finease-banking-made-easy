@@ -41,7 +41,7 @@ public class AccountServiceImpl implements IAccountService{
             throw new CustomerAlreadyExistsException("Customer already exist with mobile number"+customerDto.getMobileNumber());
         }
         Customer savedCustomer = customerRepository.save(customer);
-        Accounts savedAccount = accountRepository.save(createNewAccount(savedCustomer));
+        Accounts savedAccount = accountRepository.save(createNewAccount(savedCustomer, customerDto.getAccountsDto()));
         sendCommunication(savedAccount, savedCustomer);
     }
 
@@ -53,14 +53,18 @@ public class AccountServiceImpl implements IAccountService{
         log.info("Is the Communication request successfully triggered ? : {}", result);
     }
 
-    private Accounts createNewAccount(Customer customer){
+    private Accounts createNewAccount(Customer customer, AccountsDto accountsDto){
         Accounts newAccount = new Accounts();
         long generatedAccountNum = 1000000000L+new Random().nextInt(900000000);
 
         newAccount.setCustomerId(customer.getCustomerId());
         newAccount.setAccountNumber(generatedAccountNum);
-        newAccount.setAccountType(AccountsConstants.SAVINGS);
-        newAccount.setBranchAddress(AccountsConstants.ADDRESS);
+        newAccount.setAccountType(accountsDto != null && accountsDto.getAccountType() != null
+                ? accountsDto.getAccountType() : AccountsConstants.SAVINGS);
+        newAccount.setBranchAddress(accountsDto != null && accountsDto.getBranchAddress() != null
+                ? accountsDto.getBranchAddress() : AccountsConstants.ADDRESS);
+        newAccount.setBalance(accountsDto != null && accountsDto.getBalance() != null
+                ? accountsDto.getBalance() : 0.0);
 
         return newAccount;
     }

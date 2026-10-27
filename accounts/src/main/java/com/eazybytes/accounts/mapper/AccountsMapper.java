@@ -9,6 +9,7 @@ public class AccountsMapper {
         accountsDto.setAccountNumber(accounts.getAccountNumber());
         accountsDto.setAccountType(accounts.getAccountType());
         accountsDto.setBranchAddress(accounts.getBranchAddress());
+        accountsDto.setBalance(accounts.getBalance());
         return accountsDto;
     }
 
@@ -16,7 +17,10 @@ public class AccountsMapper {
        accounts.setAccountNumber(accountsDto.getAccountNumber());
        accounts.setAccountType(accountsDto.getAccountType());
        accounts.setBranchAddress(accountsDto.getBranchAddress());
-        return accounts;
+       if (accountsDto.getBalance() != null) {
+           accounts.setBalance(accountsDto.getBalance());
+       }
+       return accounts;
     }
 
 }

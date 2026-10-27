@@ -4,6 +4,7 @@ package com.eazybytes.accounts.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 @Data
@@ -31,5 +32,11 @@ public class AccountsDto {
             description = "Eazy Bank branch address", example = "123 NewYork"
     )
     private String branchAddress;
+
+    @PositiveOrZero(message = "Account balance should be zero or greater")
+    @Schema(
+            description = "Account balance / initial deposit", example = "5000.00"
+    )
+    private Double balance;
 
 }

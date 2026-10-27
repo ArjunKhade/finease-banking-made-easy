@@ -48,10 +48,10 @@ export class LoansComponent implements OnInit {
   constructor() {
     const user = this.auth.currentUser();
     this.loanApplyForm = this.fb.group({
-      fullName: [user?.name || 'Arjun Khade', Validators.required],
-      dob: ['12-05-1995', Validators.required],
-      mobileNumber: [user?.mobileNumber || '8788225355', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      email: [user?.email || 'arjun@gmail.com', [Validators.required, Validators.email]],
+      fullName: [user?.name || '', Validators.required],
+      dob: ['', Validators.required],
+      mobileNumber: [user?.mobileNumber || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: [user?.email || '', [Validators.required, Validators.email]],
       loanType: ['Personal Loan', Validators.required],
       loanAmount: [500000, [Validators.required, Validators.min(10000)]],
       tenure: [5, Validators.required],
@@ -60,6 +60,16 @@ export class LoansComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const user = this.auth.currentUser();
+    const mobile =
+      user?.mobileNumber ||
+      this.auth.getRegisteredUsers().find(u => u.email?.toLowerCase() === user?.email?.toLowerCase())?.mobileNumber ||
+      (typeof window !== 'undefined' ? localStorage.getItem('finease_current_mobile') : null) ||
+      '';
+
+    if (mobile && (this.loans().length === 0 || this.api.getCurrentMobile() !== mobile)) {
+      this.api.loadUserBankingData(mobile, user || undefined).subscribe();
+    }
     this.route.queryParams.subscribe(params => {
       if (params['apply']) {
         this.selectedTab.set(1);

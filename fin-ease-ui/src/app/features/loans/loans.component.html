@@ -79,6 +79,15 @@
             </button>
           </div>
         </div>
+      } @empty {
+        <div class="fe-card empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem;">
+          <mat-icon style="font-size: 54px; height: 54px; width: 54px; color: #64748b; margin-bottom: 1rem;">request_quote</mat-icon>
+          <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No Active Loans</h3>
+          <p style="color: #94a3b8; max-width: 440px; margin: 0 auto 1.5rem;">You currently do not have any open loan accounts with FinEase. Need funds for a home, vehicle, or personal project?</p>
+          <button mat-flat-button class="fe-btn-primary" (click)="selectedTab.set(1)">
+            <mat-icon>add</mat-icon> Apply for a Loan
+          </button>
+        </div>
       }
     </div>
   }
@@ -119,7 +128,7 @@
           <div class="fields-grid">
             <mat-form-field appearance="outline">
               <mat-label>Full Name</mat-label>
-              <input matInput formControlName="fullName" placeholder="Arjun Khade" />
+              <input matInput formControlName="fullName" placeholder="e.g. Jane Smith" />
               <mat-icon matPrefix>person</mat-icon>
             </mat-form-field>
 
@@ -131,13 +140,13 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Mobile Number</mat-label>
-              <input matInput formControlName="mobileNumber" placeholder="8788225355" maxlength="10" />
+              <input matInput formControlName="mobileNumber" placeholder="e.g. 9876543210" maxlength="10" />
               <mat-icon matPrefix>phone</mat-icon>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Email Address</mat-label>
-              <input matInput formControlName="email" type="email" placeholder="arjun@gmail.com" />
+              <input matInput formControlName="email" type="email" placeholder="e.g. jane.smith@example.com" />
               <mat-icon matPrefix>email</mat-icon>
             </mat-form-field>
           </div>

@@ -33,16 +33,32 @@ export class DashboardComponent implements OnInit {
   transactions = this.api.transactionsList;
 
   ngOnInit(): void {
-    const mobile = this.auth.currentUser()?.mobileNumber || '8788225355';
-    this.api.fetchCustomerDetails(mobile).subscribe();
+    const user = this.auth.currentUser();
+    const mobile =
+      user?.mobileNumber ||
+      this.auth.getRegisteredUsers().find(u => u.email?.toLowerCase() === user?.email?.toLowerCase())?.mobileNumber ||
+      (typeof window !== 'undefined' ? localStorage.getItem('finease_current_mobile') : null) ||
+      '';
+
+    if (mobile) {
+      this.api.loadUserBankingData(mobile, user || undefined).subscribe();
+    }
   }
 
   totalBalance = computed(() => {
-    return this.accounts().reduce((acc, curr) => acc + (curr.balance || 78420), 0);
+    return this.accounts().reduce((acc, curr) => acc + (curr.balance || 0), 0);
   });
 
   totalLoanOutstanding = computed(() => {
     return this.loans().reduce((acc, curr) => acc + (curr.outstandingAmount || 0), 0);
+  });
+
+  creditCardsCount = computed(() => {
+    return this.cards().filter(c => c.cardType.toLowerCase().includes('credit')).length;
+  });
+
+  debitCardsCount = computed(() => {
+    return this.cards().filter(c => c.cardType.toLowerCase().includes('debit')).length;
   });
 
   openAddAccount(): void {

@@ -30,17 +30,26 @@ public class SecurityConfig {
                 .cors(corsSpec -> corsSpec.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(e -> e
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        // Public endpoints: User Registration, Actuator health, API docs
-                        .pathMatchers("/eazybank/accounts/api/register", "/eazybank/accounts/api/create").permitAll()
+                        // Public endpoints: User Registration, Account/Card/Loan Operations, Actuator health, API docs
+                        .pathMatchers(
+                                "/eazybank/accounts/api/register",
+                                "/eazybank/accounts/api/create",
+                                "/eazybank/accounts/api/fetch",
+                                "/eazybank/accounts/api/fetchCustomerDetails",
+                                "/eazybank/cards/api/create",
+                                "/eazybank/cards/api/fetch",
+                                "/eazybank/loans/api/create",
+                                "/eazybank/loans/api/fetch"
+                        ).permitAll()
                         .pathMatchers("/actuator/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         // Admin restricted endpoints
                         .pathMatchers("/eazybank/*/api/admin/**").hasRole("ADMIN")
                         // Manager / Admin loan sanctions
                         .pathMatchers("/eazybank/loans/api/approve/**").hasAnyRole("MANAGER", "ADMIN")
                         // Microservices endpoints: accessible by appropriate roles
-                        .pathMatchers("/eazybank/accounts/**").hasAnyRole("ACCOUNTS", "USER", "MANAGER", "ADMIN")
-                        .pathMatchers("/eazybank/cards/**").hasAnyRole("CARDS", "USER", "MANAGER", "ADMIN")
-                        .pathMatchers("/eazybank/loans/**").hasAnyRole("LOANS", "USER", "MANAGER", "ADMIN")
+                        .pathMatchers("/eazybank/accounts/**").hasAnyRole("CUSTOMER", "ACCOUNTS", "USER", "MANAGER", "ADMIN")
+                        .pathMatchers("/eazybank/cards/**").hasAnyRole("CUSTOMER", "CARDS", "USER", "MANAGER", "ADMIN")
+                        .pathMatchers("/eazybank/loans/**").hasAnyRole("CUSTOMER", "LOANS", "USER", "MANAGER", "ADMIN")
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(o -> o
                         .jwt(jwtSpec -> jwtSpec

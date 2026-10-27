@@ -41,11 +41,13 @@ export class CreateAccountDialogComponent {
   ) {
     const user = this.auth.currentUser();
     this.accountForm = this.fb.group({
-      name: [user?.name || 'Arjun Khade', [Validators.required, Validators.minLength(3)]],
-      email: [user?.email || 'arjun@gmail.com', [Validators.required, Validators.email]],
-      mobileNumber: [user?.mobileNumber || '8788225355', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      name: [user?.name || '', [Validators.required, Validators.minLength(3)]],
+      email: [user?.email || '', [Validators.required, Validators.email]],
+      mobileNumber: [user?.mobileNumber || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       accountType: ['Savings Account', Validators.required],
-      branchAddress: ['123 Main Street, Pune Main Branch', Validators.required]
+      branchAddress: ['Pune Main Branch', Validators.required],
+      depositAmount: [5000, [Validators.required, Validators.min(0)]],
+      password: ['Customer@123', [Validators.minLength(6)]]
     });
   }
 
@@ -60,21 +62,25 @@ export class CreateAccountDialogComponent {
       mobileNumber: val.mobileNumber,
       accountsDto: {
         accountType: val.accountType,
-        branchAddress: val.branchAddress
+        branchAddress: val.branchAddress,
+        balance: Number(val.depositAmount) || 0
       }
     };
 
     this.api.createAccount(customer).subscribe({
-      next: (res) => {
+      next: async (res) => {
+        const pwd = val.password || 'Customer@123';
+        await this.auth.syncKeycloakUser(val.name, val.email, val.mobileNumber, pwd);
         this.isSubmitting = false;
-        this.notification.success('Account created successfully in EazyBank!');
+        this.notification.success('Account created and synced to Keycloak IAM successfully!');
         this.dialogRef.close(true);
       },
       error: (err) => {
         this.isSubmitting = false;
-        const serverMsg = err?.error?.errorMessage;
+        const serverMsg = err?.error?.errorMessage || err?.error?.message ||
+          (typeof err?.error === 'object' && err?.error ? Object.values(err.error)[0] : null);
         if (serverMsg) {
-          this.notification.error(serverMsg);
+          this.notification.error(String(serverMsg));
         } else {
           this.notification.error('Failed to create account. Please ensure the mobile number is unique.');
         }

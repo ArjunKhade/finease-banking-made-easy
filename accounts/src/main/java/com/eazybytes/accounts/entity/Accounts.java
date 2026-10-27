@@ -20,6 +20,9 @@ public class Accounts extends  BaseEntity {
     @Column(name = "branch_address")
     private String branchAddress;
 
+    @Column(name = "balance")
+    private Double balance;
+
     @Column(name ="communcation_sw")
     private Boolean communcationSw;
 }

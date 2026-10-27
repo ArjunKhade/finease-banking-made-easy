@@ -42,40 +42,33 @@ export class AdminComponent {
 
   displayedColumns: string[] = ['name', 'mobile', 'role', 'status', 'actions'];
 
-  users = signal<ManagedUser[]>([
-    {
-      id: 'kc-usr-001',
-      name: 'Arjun Khade',
-      email: 'arjun@gmail.com',
-      mobile: '8788225355',
-      role: 'ADMIN',
-      status: 'Active'
-    },
-    {
-      id: 'kc-usr-002',
-      name: 'Priya Sharma',
-      email: 'priya.manager@bank.com',
-      mobile: '9822012345',
-      role: 'MANAGER',
-      status: 'Active'
-    },
-    {
-      id: 'kc-usr-003',
-      name: 'Rahul Deshmukh',
-      email: 'rahul.d@bank.com',
-      mobile: '9765432100',
-      role: 'USER',
-      status: 'Active'
-    },
-    {
-      id: 'kc-usr-004',
-      name: 'Sneha Patel',
-      email: 'sneha.patel@bank.com',
-      mobile: '9123456780',
-      role: 'USER',
-      status: 'Active'
+  users = signal<ManagedUser[]>([]);
+
+  constructor() {
+    this.refreshUsers();
+  }
+
+  async refreshUsers(): Promise<void> {
+    try {
+      const liveUsers = await this.auth.fetchKeycloakUsers();
+      this.renderUsers(liveUsers);
+    } catch {
+      const fallback = this.auth.getRegisteredUsers();
+      this.renderUsers(fallback);
     }
-  ]);
+  }
+
+  private renderUsers(registered: any[]): void {
+    const mapped: ManagedUser[] = registered.map((u, idx) => ({
+      id: u.id || `usr-${idx}`,
+      name: u.name,
+      email: u.email,
+      mobile: u.mobileNumber || 'N/A',
+      role: (u.roles && u.roles[0]) === 'USER' ? 'CUSTOMER' : ((u.roles && u.roles[0]) || 'CUSTOMER'),
+      status: 'Active'
+    }));
+    this.users.set(mapped);
+  }
 
   getInitials(name: string): string {
     const parts = name.split(' ');
@@ -83,19 +76,13 @@ export class AdminComponent {
   }
 
   changeRole(user: ManagedUser, newRole: UserRole): void {
-    this.users.update(list =>
-      list.map(u => (u.id === user.id ? { ...u, role: newRole } : u))
-    );
-
-    // If updating current logged in user, also update session
-    if (this.auth.currentUser()?.email === user.email) {
-      this.auth.setMockSession(newRole, user.name, user.email, user.mobile);
-    }
-
-    this.notification.success(`Assigned role ${newRole} to ${user.name} in Keycloak Realm.`);
+    this.auth.updateUserRole(user.id, newRole);
+    this.refreshUsers();
+    this.notification.success(`Assigned role ${newRole} to ${user.name} in IAM Directory.`);
   }
 
-  onSyncKeycloak(): void {
-    this.notification.info('Synced with Keycloak realm: eazybank');
+  async onSyncKeycloak(): Promise<void> {
+    await this.refreshUsers();
+    this.notification.success('Synced live users from Keycloak IAM Directory.');
   }
 }

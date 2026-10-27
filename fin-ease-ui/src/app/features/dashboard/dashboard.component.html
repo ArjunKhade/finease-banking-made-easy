@@ -29,7 +29,13 @@
         <div class="metric-info">
           <span class="label">Total Balance</span>
           <h3 class="value">₹ {{ totalBalance().toLocaleString() }}</h3>
-          <span class="subtext">Across {{ accounts().length }} active accounts</span>
+          <span class="subtext">
+            @if (accounts().length > 0) {
+              Across {{ accounts().length }} active account(s)
+            } @else {
+              No active accounts
+            }
+          </span>
         </div>
         <div class="metric-icon blue-icon">
           <mat-icon>account_balance_wallet</mat-icon>
@@ -47,14 +53,20 @@
         <div class="metric-info">
           <span class="label">Active Loans</span>
           <h3 class="value purple">₹ {{ totalLoanOutstanding().toLocaleString() }}</h3>
-          <span class="subtext">{{ loans().length }} Active Loans</span>
+          <span class="subtext">
+            @if (loans().length > 0) {
+              {{ loans().length }} Active Loans
+            } @else {
+              No active loans
+            }
+          </span>
         </div>
         <div class="metric-icon purple-icon">
           <mat-icon>account_balance</mat-icon>
         </div>
       </div>
       <div class="metric-footer">
-        <span class="next-emi">Next EMI: <strong>25 Nov</strong></span>
+        <span class="next-emi">Next EMI: <strong>{{ loans().length > 0 ? (loans()[0].nextDueDate || 'Pending') : 'None' }}</strong></span>
         <a routerLink="/loans" class="card-link">View Details</a>
       </div>
     </div>
@@ -65,14 +77,20 @@
         <div class="metric-info">
           <span class="label">Total Cards</span>
           <h3 class="value green">{{ cards().length }}</h3>
-          <span class="subtext">1 Credit • 1 Debit</span>
+          <span class="subtext">
+            @if (cards().length > 0) {
+              {{ creditCardsCount() }} Credit • {{ debitCardsCount() }} Debit
+            } @else {
+              No cards linked
+            }
+          </span>
         </div>
         <div class="metric-icon green-icon">
           <mat-icon>credit_card</mat-icon>
         </div>
       </div>
       <div class="metric-footer">
-        <span class="status-pill active">● All Active</span>
+        <span class="status-pill active">● {{ cards().length > 0 ? 'Active' : 'Ready to Issue' }}</span>
         <a routerLink="/cards" class="card-link">Manage Cards</a>
       </div>
     </div>
@@ -109,6 +127,12 @@
               {{ txn.type === 'credit' ? '+' : '-' }} ₹ {{ txn.amount.toLocaleString() }}
             </div>
           </div>
+        } @empty {
+          <div style="text-align: center; padding: 2.5rem 1rem; color: #8892b0;">
+            <mat-icon style="font-size: 36px; height: 36px; width: 36px; margin-bottom: 0.5rem; opacity: 0.5;">receipt_long</mat-icon>
+            <p style="margin: 0; font-size: 0.95rem;">No recent transactions recorded.</p>
+            <span style="font-size: 0.8rem; opacity: 0.7;">Transactions will appear here as you use your account.</span>
+          </div>
         }
       </div>
     </div>
@@ -119,7 +143,7 @@
       <div class="fe-card account-preview-card">
         <div class="card-header">
           <h3>Primary Account</h3>
-          <span class="fe-badge fe-badge-success">Active</span>
+          <span class="fe-badge fe-badge-success">{{ accounts().length > 0 ? 'Active' : 'Unlinked' }}</span>
         </div>
         @if (accounts().length > 0) {
           <div class="acc-body">
@@ -132,12 +156,18 @@
             </div>
             <div class="balance-display">
               <span class="lbl">Available Balance</span>
-              <div class="amt">₹ {{ (accounts()[0].balance || 78420).toLocaleString() }}</div>
+              <div class="amt">₹ {{ (accounts()[0].balance || 0).toLocaleString() }}</div>
             </div>
             <div class="branch-tag">
               <mat-icon>place</mat-icon>
               <span>{{ accounts()[0].branchAddress }}</span>
             </div>
+          </div>
+        } @else {
+          <div class="acc-body" style="text-align: center; padding: 2rem 1rem;">
+            <mat-icon style="font-size: 36px; height: 36px; width: 36px; color: #64748b; margin-bottom: 0.5rem;">account_balance</mat-icon>
+            <p style="margin: 0 0 1rem; font-size: 0.9rem; color: #94a3b8;">No active account found for your profile.</p>
+            <button mat-flat-button class="fe-btn-primary" (click)="openAddAccount()">Open First Account</button>
           </div>
         }
       </div>

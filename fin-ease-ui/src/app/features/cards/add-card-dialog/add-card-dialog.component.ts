@@ -40,18 +40,18 @@ export class AddCardDialogComponent {
   ) {
     const user = this.auth.currentUser();
     this.cardForm = this.fb.group({
-      mobileNumber: [user?.mobileNumber || '8788225355', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      mobileNumber: [user?.mobileNumber || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       cardType: ['Credit Card', Validators.required],
-      cardHolder: [user?.name || 'Arjun Khade', Validators.required]
+      cardHolder: [user?.name || '', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.cardForm.invalid) return;
     this.isSubmitting = true;
-    const { mobileNumber, cardType } = this.cardForm.value;
+    const { mobileNumber, cardType, cardHolder } = this.cardForm.value;
 
-    this.api.createCard(mobileNumber, cardType).subscribe({
+    this.api.createCard(mobileNumber, cardType, cardHolder).subscribe({
       next: (res) => {
         this.isSubmitting = false;
         this.notification.success('New card issued successfully!');

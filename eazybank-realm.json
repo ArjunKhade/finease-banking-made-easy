@@ -1,7 +1,7 @@
 {
   "id": "eazybank",
   "realm": "eazybank",
-  "displayName": "EasyBank Microservices IAM",
+  "displayName": "FinEase Banking Made Easy",
   "enabled": true,
   "sslRequired": "external",
   "registrationAllowed": true,
@@ -20,25 +20,13 @@
         "description": "Branch Management and Loan Sanctions"
       },
       {
-        "name": "USER",
+        "name": "CUSTOMER",
         "description": "Standard Retail Banking Customer"
-      },
-      {
-        "name": "ACCOUNTS",
-        "description": "Access to Accounts Microservice"
-      },
-      {
-        "name": "CARDS",
-        "description": "Access to Cards Microservice"
-      },
-      {
-        "name": "LOANS",
-        "description": "Access to Loans Microservice"
       }
     ]
   },
   "defaultRoles": [
-    "USER"
+    "CUSTOMER"
   ],
   "clients": [
     {
@@ -72,6 +60,22 @@
         "profile",
         "roles",
         "email"
+      ],
+      "protocolMappers": [
+        {
+          "name": "mobileNumber",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "mobileNumber",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "mobileNumber",
+            "jsonType.label": "String"
+          }
+        }
       ]
     },
     {
@@ -89,37 +93,10 @@
   ],
   "users": [
     {
-      "username": "arjun@gmail.com",
-      "email": "arjun@gmail.com",
-      "firstName": "Arjun",
-      "lastName": "Khade",
-      "enabled": true,
-      "emailVerified": true,
-      "credentials": [
-        {
-          "type": "password",
-          "value": "Password123!",
-          "temporary": false
-        }
-      ],
-      "realmRoles": [
-        "ADMIN",
-        "USER",
-        "ACCOUNTS",
-        "CARDS",
-        "LOANS"
-      ],
-      "attributes": {
-        "mobileNumber": [
-          "8788225355"
-        ]
-      }
-    },
-    {
       "username": "admin@eazybank.com",
       "email": "admin@eazybank.com",
-      "firstName": "Arjun",
-      "lastName": "Admin",
+      "firstName": "System",
+      "lastName": "Administrator",
       "enabled": true,
       "emailVerified": true,
       "credentials": [
@@ -130,15 +107,11 @@
         }
       ],
       "realmRoles": [
-        "ADMIN",
-        "USER",
-        "ACCOUNTS",
-        "CARDS",
-        "LOANS"
+        "ADMIN"
       ],
       "attributes": {
         "mobileNumber": [
-          "8788225355"
+          "9876543210"
         ]
       }
     },
@@ -157,10 +130,7 @@
         }
       ],
       "realmRoles": [
-        "MANAGER",
-        "USER",
-        "LOANS",
-        "CARDS"
+        "MANAGER"
       ],
       "attributes": {
         "mobileNumber": [
@@ -183,14 +153,34 @@
         }
       ],
       "realmRoles": [
-        "USER",
-        "ACCOUNTS",
-        "CARDS",
-        "LOANS"
+        "CUSTOMER"
       ],
       "attributes": {
         "mobileNumber": [
           "9765432100"
+        ]
+      }
+    },
+    {
+      "username": "monu@gmail.com",
+      "email": "monu@gmail.com",
+      "firstName": "Monu",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Monu@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "CUSTOMER"
+      ],
+      "attributes": {
+        "mobileNumber": [
+          "9876543215"
         ]
       }
     }

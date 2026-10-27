@@ -25,7 +25,7 @@ export class ProfileComponent {
   user = this.auth.currentUser;
 
   userInitials(): string {
-    const name = this.user()?.name || 'Arjun';
+    const name = this.user()?.name || 'Customer';
     return name.slice(0, 1).toUpperCase();
   }
 

@@ -77,7 +77,7 @@
         <div class="persona-btns">
           <button mat-button class="p-btn" [class.active]="isAdmin()" (click)="switchRole('ADMIN')">Admin</button>
           <button mat-button class="p-btn" [class.active]="isManager()" (click)="switchRole('MANAGER')">Manager</button>
-          <button mat-button class="p-btn" [class.active]="!isAdmin() && !isManager()" (click)="switchRole('USER')">User</button>
+          <button mat-button class="p-btn" [class.active]="isCustomer()" (click)="switchRole('CUSTOMER')">Customer</button>
         </div>
       </div>
 

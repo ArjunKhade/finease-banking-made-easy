@@ -37,7 +37,7 @@
               <h4 class="acc-num">XXXX {{ acc.accountNumber?.toString()?.slice(-4) }}</h4>
               <div class="balance-wrap">
                 <span class="bal-label">Available Balance</span>
-                <h3 class="bal-val">₹ {{ (acc.balance || 78420).toLocaleString() }}</h3>
+                <h3 class="bal-val">₹ {{ (acc.balance || 0).toLocaleString() }}</h3>
               </div>
             </div>
             <mat-icon class="acc-chevron">chevron_right</mat-icon>
@@ -77,7 +77,7 @@
           </div>
           <div class="banner-balance">
             <span>Available Balance</span>
-            <h2>₹ {{ (acc.balance || 78420).toLocaleString() }}</h2>
+            <h2>₹ {{ (acc.balance || 0).toLocaleString() }}</h2>
           </div>
         </div>
 
@@ -85,7 +85,7 @@
         <div class="details-spec-grid">
           <div class="spec-cell">
             <span class="spec-label">Account Holder</span>
-            <span class="spec-value">Arjun Khade</span>
+            <span class="spec-value">{{ auth.currentUser()?.name || 'Valued Customer' }}</span>
           </div>
           <div class="spec-cell">
             <span class="spec-label">IFSC Code</span>
@@ -107,30 +107,22 @@
             <h4>Recent Account Activity</h4>
           </div>
           <div class="p-txn-list">
-            <div class="p-txn-row">
-              <div class="p-icon upi"><mat-icon>send</mat-icon></div>
-              <div class="p-info">
-                <strong>UPI Payment</strong>
-                <span>To Rahul Sharma • Today</span>
+            @for (txn of transactions(); track txn.id) {
+              <div class="p-txn-row">
+                <div class="p-icon" [ngClass]="txn.category">
+                  <mat-icon>{{ txn.category === 'transfer' ? 'send' : txn.category === 'salary' ? 'work' : 'atm' }}</mat-icon>
+                </div>
+                <div class="p-info">
+                  <strong>{{ txn.title }}</strong>
+                  <span>{{ txn.subtitle }} • {{ txn.date }}</span>
+                </div>
+                <span class="p-amt" [ngClass]="txn.type">{{ txn.type === 'credit' ? '+' : '-' }} ₹ {{ txn.amount.toLocaleString() }}</span>
               </div>
-              <span class="p-amt debit">- ₹ 2,000</span>
-            </div>
-            <div class="p-txn-row">
-              <div class="p-icon salary"><mat-icon>work</mat-icon></div>
-              <div class="p-info">
-                <strong>Salary Credit</strong>
-                <span>Acme Corp • 14 Oct 2026</span>
+            } @empty {
+              <div style="padding: 1.5rem; text-align: center; color: #8892b0; font-size: 0.88rem;">
+                No recent transactions on this account.
               </div>
-              <span class="p-amt credit">+ ₹ 45,000</span>
-            </div>
-            <div class="p-txn-row">
-              <div class="p-icon atm"><mat-icon>atm</mat-icon></div>
-              <div class="p-info">
-                <strong>ATM Cash Withdrawal</strong>
-                <span>Pune Main Branch • 12 Oct 2026</span>
-              </div>
-              <span class="p-amt debit">- ₹ 5,000</span>
-            </div>
+            }
           </div>
         </div>
       </div>
