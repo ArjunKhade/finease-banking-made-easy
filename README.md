@@ -6,7 +6,7 @@ A production-grade, event-driven digital banking microservices platform built wi
 
 ## 📚 Essential Guides & Documentation
 
-- 📐 **Architecture & Request Flow (0 to Hero)**: [ARCHITECTURE_AND_REQUEST_FLOW.md](./ARCHITECTURE_AND_REQUEST_FLOW.md) — Comprehensive deep-dive into Keycloak IAM sync, PKCE authentication, OpenFeign synchronous aggregation, and RabbitMQ messaging.
+- 📐 **Architecture & Request Flow**: [ARCHITECTURE_AND_REQUEST_FLOW.md](./ARCHITECTURE_AND_REQUEST_FLOW.md) — Comprehensive deep-dive into Keycloak IAM sync, PKCE authentication, OpenFeign synchronous aggregation, and RabbitMQ messaging.
 - 📖 **Local IDE Setup & Run Guide**: [RUN_LOCAL_IDE.md](./RUN_LOCAL_IDE.md) — Step-by-step instructions to run and debug all microservices in IntelliJ IDEA, Eclipse, or VS Code.
 - 💻 **Frontend Web Application**: [fin-ease-ui](./fin-ease-ui) — Modern Angular SPA with Material Design, reactive signals, and real-time banking dashboards.
 - 🐳 **Infrastructure Docker Compose**: [docker-compose-infra.yml](./docker-compose-infra.yml) — Quick launch for RabbitMQ, Redis, and Keycloak containers.
